@@ -18,16 +18,24 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .week-tab { flex-shrink: 0; padding: 5px 12px; border-radius: 20px; border: 1.5px solid #D3D1C7; background: white; color: #888780; font-size: 12px; font-weight: 500; cursor: pointer; white-space: nowrap; }
 .week-tab.active { background: #2C2C2A; color: white; border-color: #2C2C2A; }
 .day-tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; padding: 10px 12px; background: white; border-bottom: 1px solid #e0e0dc; }
-.day-tab { padding: 7px 2px; border-radius: 8px; border: 1px solid #D3D1C7; background: white; color: #888780; font-size: 11px; font-weight: 500; cursor: pointer; text-align: center; }
+.day-tab { padding: 7px 2px; border-radius: 8px; border: 1px solid #D3D1C7; background: white; color: #888780; font-size: 11px; font-weight: 500; cursor: pointer; text-align: center; line-height: 1.4; }
 .day-tab.active { background: #f0ede8; color: #2C2C2A; border-color: #2C2C2A; font-weight: 600; }
 .day-tab.bonus { border-style: dashed; }
 .progress-wrap { padding: 10px 14px 0; }
 .progress-text { font-size: 12px; color: #888780; margin-bottom: 5px; }
 .progress-bar { height: 5px; background: #e0e0dc; border-radius: 3px; overflow: hidden; }
 .progress-fill { height: 100%; background: #854F0B; border-radius: 3px; transition: width 0.3s; }
+.rest-bar { background: #2C2C2A; padding: 10px 14px; display: none; align-items: center; gap: 10px; }
+.rest-bar.visible { display: flex; }
+.rest-label { color: white; font-size: 12px; font-weight: 500; white-space: nowrap; }
+.rest-countdown { color: white; font-size: 20px; font-weight: 700; min-width: 36px; text-align: center; }
+.rest-track { flex: 1; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; overflow: hidden; }
+.rest-fill { height: 100%; background: #EF9F27; border-radius: 2px; transition: width 1s linear; }
+.rest-skip { color: rgba(255,255,255,0.6); font-size: 11px; cursor: pointer; white-space: nowrap; }
 .content { padding: 0 12px; }
-.section-label { font-size: 10px; font-weight: 700; color: #888780; text-transform: uppercase; letter-spacing: 0.07em; margin: 14px 0 6px; }
-.ex-card { background: white; border: 1px solid #e8e8e4; border-radius: 10px; padding: 11px 12px; margin-bottom: 6px; display: flex; align-items: flex-start; gap: 10px; -webkit-tap-highlight-color: transparent; }
+.section-label { font-size: 10px; font-weight: 700; color: #888780; text-transform: uppercase; letter-spacing: 0.07em; margin: 14px 0 6px; display: flex; align-items: center; justify-content: space-between; }
+.section-rest { font-size: 10px; color: #854F0B; font-weight: 600; }
+.ex-card { background: white; border: 1px solid #e8e8e4; border-radius: 10px; padding: 11px 12px; margin-bottom: 6px; display: flex; align-items: flex-start; gap: 10px; }
 .ex-card.done { opacity: 0.45; }
 .ex-card.done .check { background: #854F0B; border-color: #854F0B; }
 .ex-card.done .check-icon { opacity: 1; }
@@ -37,7 +45,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .ex-name { font-size: 14px; font-weight: 600; color: #2C2C2A; }
 .ex-detail { font-size: 12px; color: #888780; margin-top: 1px; }
 .ex-tip { font-size: 11px; color: #854F0B; margin-top: 3px; font-style: italic; }
-.how-btn { display: inline-block; margin-top: 5px; padding: 3px 9px; border-radius: 20px; border: 1px solid #2C2C2A; background: #f0ede8; color: #2C2C2A; font-size: 11px; font-weight: 500; cursor: pointer; }
+.btn-row { display: flex; gap: 6px; margin-top: 5px; flex-wrap: wrap; }
+.how-btn { padding: 3px 9px; border-radius: 20px; border: 1px solid #2C2C2A; background: #f0ede8; color: #2C2C2A; font-size: 11px; font-weight: 500; cursor: pointer; }
+.rest-btn { padding: 3px 9px; border-radius: 20px; border: 1px solid #854F0B; background: #FAEEDA; color: #854F0B; font-size: 11px; font-weight: 500; cursor: pointer; }
 .reset-btn { display: block; width: 100%; margin-top: 14px; padding: 11px; border-radius: 10px; border: 1px solid #D3D1C7; background: white; color: #888780; font-size: 13px; cursor: pointer; text-align: center; }
 .confetti-wrap { text-align: center; padding: 1.5rem 1rem; display: none; }
 .confetti-wrap.show { display: block; }
@@ -45,8 +55,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .confetti-wrap span { font-size: 36px; display: block; margin-bottom: 8px; }
 .note-box { background: #FAEEDA; border-radius: 8px; padding: 10px 12px; margin: 10px 0 0; font-size: 12px; color: #633806; line-height: 1.5; }
 .note-box strong { font-weight: 600; }
-
-/* Modal */
 .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; align-items: flex-end; justify-content: center; }
 .modal-overlay.open { display: flex; }
 .modal { background: white; border-radius: 20px 20px 0 0; padding: 1.25rem 1.25rem 2rem; width: 100%; max-width: 480px; max-height: 80vh; overflow-y: auto; }
@@ -65,15 +73,15 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 <div class="app">
   <div class="header">
     <div class="phase-badge" id="phase-badge">Phase 1: Foundation</div>
-    <h1>Justin's Training Program 💪</h1>
-    <p id="header-sub">3 days/week · full gym · compound first</p>
+    <h1>Justin's Training Program</h1>
+    <p id="header-sub">3 days/week · full gym · 50 min target</p>
   </div>
   <div class="tabs-wrap">
     <div class="week-tabs">
-      <button class="week-tab active" onclick="setWeek(1)">Week 1–2</button>
-      <button class="week-tab" onclick="setWeek(3)">Week 3–4</button>
-      <button class="week-tab" onclick="setWeek(5)">Week 5–6</button>
-      <button class="week-tab" onclick="setWeek(7)">Week 7–8</button>
+      <button class="week-tab active" onclick="setWeek(1)">Week 1-2</button>
+      <button class="week-tab" onclick="setWeek(3)">Week 3-4</button>
+      <button class="week-tab" onclick="setWeek(5)">Week 5-6</button>
+      <button class="week-tab" onclick="setWeek(7)">Week 7-8</button>
     </div>
   </div>
   <div class="day-tabs">
@@ -86,701 +94,463 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     <div class="progress-text" id="progress-text">0 of 0 done</div>
     <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
   </div>
+  <div class="rest-bar" id="rest-bar">
+    <span class="rest-label">Rest</span>
+    <span class="rest-countdown" id="rest-countdown">90</span>
+    <div class="rest-track"><div class="rest-fill" id="rest-fill" style="width:100%"></div></div>
+    <span class="rest-skip" onclick="skipRest()">skip x</span>
+  </div>
   <div class="content">
     <div id="exercise-list"></div>
     <div class="confetti-wrap" id="confetti">
-      <span>💪</span>
+      <span>&#128170;</span>
       <p>Session done. Go eat something with protein.</p>
     </div>
-    <button class="reset-btn" onclick="resetDay()">↺ Reset day</button>
+    <button class="reset-btn" onclick="resetDay()">Reset day</button>
   </div>
 </div>
-
-<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
-  <div class="modal" id="modal">
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
+  <div class="modal">
     <div class="modal-handle"></div>
     <div class="modal-name" id="modal-name"></div>
     <div class="modal-detail" id="modal-detail"></div>
     <ul class="modal-steps" id="modal-steps"></ul>
     <div class="modal-note" id="modal-note"></div>
-    <button class="modal-close" onclick="closeModalDirect()">Got it</button>
+    <button class="modal-close" onclick="closeModal()">Got it</button>
   </div>
 </div>
-
 <script>
-const howTo = {
+
+var restInterval = null;
+var restRemaining = 0;
+var restTotal = 0;
+
+function startRest(seconds) {
+  if (restInterval) clearInterval(restInterval);
+  restRemaining = seconds;
+  restTotal = seconds;
+  document.getElementById('rest-bar').classList.add('visible');
+  updateRestDisplay();
+  restInterval = setInterval(function() {
+    restRemaining--;
+    updateRestDisplay();
+    if (restRemaining <= 0) finishRest();
+  }, 1000);
+}
+
+function updateRestDisplay() {
+  document.getElementById('rest-countdown').textContent = restRemaining;
+  var pct = (restRemaining / restTotal) * 100;
+  document.getElementById('rest-fill').style.width = pct + '%';
+  document.getElementById('rest-fill').style.background = restRemaining <= 10 ? '#E24B4A' : '#EF9F27';
+}
+
+function finishRest() {
+  if (restInterval) clearInterval(restInterval);
+  restInterval = null;
+  document.getElementById('rest-bar').classList.remove('visible');
+  try {
+    var ctx = new (window.AudioContext || window.webkitAudioContext)();
+    [0, 0.15, 0.3].forEach(function(t) {
+      var o = ctx.createOscillator();
+      var g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.frequency.value = 880;
+      g.gain.setValueAtTime(0.3, ctx.currentTime + t);
+      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + t + 0.12);
+      o.start(ctx.currentTime + t);
+      o.stop(ctx.currentTime + t + 0.15);
+    });
+  } catch(e) {}
+}
+
+function skipRest() {
+  if (restInterval) clearInterval(restInterval);
+  restInterval = null;
+  document.getElementById('rest-bar').classList.remove('visible');
+}
+
+var restTimes = { warmup: 0, main: 90, accessory: 60, core: 45 };
+
+var howTo = {
   "Barbell back squat": {
-    steps: [
-      "Bar sits across your upper traps — not your neck. Grip slightly wider than shoulder-width.",
-      "Step back, feet shoulder-width apart, toes out 15-30 degrees.",
-      "Take a big breath, brace your core hard like you're about to take a punch, then sit back and down.",
-      "Keep your chest up, knees tracking over your toes. Hit parallel or just below.",
-      "Drive through your whole foot to stand. Exhale at the top."
-    ],
-    note: "Start embarrassingly light. Form first, weight later. The squat rewards patience and punishes ego."
+    steps: ["Bar across upper traps, not your neck. Grip slightly wider than shoulder-width.", "Feet shoulder-width, toes out 15-30 degrees.", "Big breath, brace your core hard, sit back and down. Chest stays up.", "Knees track over toes. Hit parallel or just below.", "Drive through your whole foot to stand. Exhale at top."],
+    note: "Start light. Form first, weight later. The squat rewards patience and punishes ego."
   },
   "Leg press": {
-    steps: [
-      "Feet shoulder-width on the platform, toes slightly out. Higher foot position hits glutes more; lower hits quads more.",
-      "Lower the platform until your knees are at about 90 degrees — don't let your lower back peel off the seat.",
-      "Press through your heels and the full foot. Don't lock out your knees at the top.",
-      "Control the descent. 2 seconds down, 1 second up."
-    ],
-    note: "Good complement to squats. Lets you add quad volume without lower back fatigue."
-  },
-  "Dumbbell walking lunge": {
-    steps: [
-      "Hold dumbbells at your sides. Step forward with one foot and lower your back knee toward the floor.",
-      "Front shin stays as vertical as possible. Don't let your knee cave in.",
-      "Push off your front foot and step the back foot through to the next lunge.",
-      "Keep your torso upright the whole way. Don't lean forward."
-    ],
-    note: "Great for quad and glute development. Go lighter than you think — these add up fast."
+    steps: ["Feet shoulder-width on the platform, toes slightly out.", "Lower until knees hit about 90 degrees. Don't let lower back peel off the seat.", "Press through your heels. Don't lock out knees at top.", "2 seconds down, 1 up."],
+    note: "Higher foot position hits glutes more. Lower hits quads more."
   },
   "Flat barbell bench press": {
-    steps: [
-      "Lie flat, eyes under the bar. Grip slightly wider than shoulder-width. Feet flat on the floor.",
-      "Pull the bar out of the rack and position it over your lower chest/upper sternum.",
-      "Lower it in a slight arc to your chest — controlled, 2-3 seconds down.",
-      "Press back up and slightly back toward the rack. Don't bounce off your chest."
-    ],
-    note: "Keep your shoulder blades retracted (pinched back) throughout. Protects your shoulders."
+    steps: ["Lie flat, eyes under the bar. Grip slightly wider than shoulder-width. Feet flat on floor.", "Lower to your chest, controlled, 2-3 seconds down.", "Press back up. Don't bounce off your chest.", "Shoulder blades stay pinched back the whole time."],
+    note: "Retracted shoulder blades throughout. Protects your shoulders long-term."
   },
   "Incline dumbbell press": {
-    steps: [
-      "Set bench to 30-45 degrees. Hold dumbbells at shoulder level, palms facing forward.",
-      "Press up and slightly in — dumbbells nearly touch at the top.",
-      "Lower slowly to chest level. Elbows at about 45-75 degrees from your body.",
-      "Full range of motion — let the dumbbells come down to a good stretch."
-    ],
+    steps: ["Bench at 30-45 degrees. Dumbbells at shoulder level, palms forward.", "Press up and slightly in. Dumbbells nearly touch at top.", "Lower slowly to chest. Elbows at 45-75 degrees from body.", "Full range - let the stretch happen at the bottom."],
     note: "Upper chest and anterior shoulder. Pairs well with flat bench."
   },
   "Dumbbell lateral raise": {
-    steps: [
-      "Stand with dumbbells at your sides, slight bend in elbows.",
-      "Raise your arms out to the sides until they're roughly parallel to the floor.",
-      "Lead with your elbows, not your wrists. Think about pouring a glass of water.",
-      "Lower slowly — don't let them drop. 3 seconds down."
-    ],
-    note: "Go light. This is a detail movement, not a strength one. Most people use way too much weight."
+    steps: ["Dumbbells at sides, slight elbow bend.", "Raise arms out to sides until parallel to floor.", "Lead with elbows, not wrists. Think: pouring water.", "3 seconds down. Don't drop them."],
+    note: "Go light. Most people ego-lift this and get nothing from it."
   },
   "Cable tricep pushdown": {
-    steps: [
-      "Stand at cable machine, rope or bar attachment at the top.",
-      "Elbows pinned to your sides — they stay there the whole set.",
-      "Push the attachment down until your arms are fully extended.",
-      "Control back up. Elbows don't move, only your forearms."
-    ],
-    note: "Elbows glued to your ribs is the whole cue. If they're flaring, the weight is too heavy."
+    steps: ["Cable machine, rope or bar at the top.", "Elbows pinned to your sides. They don't move.", "Push down until arms fully extend.", "Control back up. Only forearms move."],
+    note: "Elbows glued to ribs is the whole cue."
   },
   "Hanging knee raise": {
-    steps: [
-      "Hang from a pull-up bar with an overhand grip.",
-      "Brace your core and pull your knees up toward your chest.",
-      "Hold briefly at the top, then lower with control. Don't swing.",
-      "Progress to straight leg raises when this gets easy."
-    ],
-    note: "If the bar's too high, use the captain's chair (arm pad station) — same movement, easier to control."
-  },
-  "Romanian deadlift": {
-    steps: [
-      "Stand with feet hip-width apart, barbell in hands just outside your hips.",
-      "Push your hips back — not down. Hinge at the hips, keeping the bar close to your legs.",
-      "Lower until you feel a strong stretch in your hamstrings. Back stays flat the whole time.",
-      "Drive your hips forward to stand back up. Squeeze your glutes at the top."
-    ],
-    note: "The most important cue: hinge at the hips, don't squat. If your knees are bending a lot, you're squatting. Push your hips back like you're closing a car door with your backside."
-  },
-  "Conventional deadlift": {
-    steps: [
-      "Bar over your mid-foot. Feet hip-width apart. Grip just outside your legs.",
-      "Hinge down to the bar — hips above your knees, chest up, back flat.",
-      "Take a big breath and brace hard. Think: push the floor away, not pull the bar up.",
-      "Bar stays close to your body the whole way — shins, thighs, hips. Stand tall at the top.",
-      "Lower with control by hinging back at the hips."
-    ],
-    note: "Start with Romanian deadlifts to learn the hip hinge first. The conventional pull will feel much more natural once you have that pattern dialed."
-  },
-  "Leg curl (machine)": {
-    steps: [
-      "Lie face down on the machine, pad just above your heels.",
-      "Curl your heels toward your backside as far as the machine allows.",
-      "Hold 1 second at the top, then lower slowly — 3 seconds down.",
-      "Don't let your hips lift off the pad. If they do, the weight is too heavy."
-    ],
-    note: "Isolates the hamstrings. Good complement to RDLs which hit them in the stretched position."
-  },
-  "Barbell hip thrust": {
-    steps: [
-      "Sit with your upper back against a bench. Roll the barbell over your hips — use a pad.",
-      "Feet flat on the floor, hip-width apart, knees bent.",
-      "Drive through your heels and thrust your hips up. Squeeze your glutes hard at the top.",
-      "Body makes a straight line from knees to shoulders. Don't hyperextend your lower back.",
-      "Lower slowly and repeat."
-    ],
-    note: "The best glute exercise in the gym. More range of motion than any squat variation. Load it progressively — this one responds well to weight."
-  },
-  "Pull-up / Lat pulldown": {
-    steps: [
-      "If doing pulldowns: sit with thighs under the pad, grip wider than shoulder-width.",
-      "Pull the bar to your upper chest, leading with your elbows — think about putting them in your back pockets.",
-      "Control back up to full arm extension.",
-      "If doing pull-ups: same cue — lead with the elbows, chest to the bar."
-    ],
-    note: "Pulldowns and pull-ups train the same muscles. Use pulldowns to build toward pull-ups, or alternate."
-  },
-  "Barbell bent-over row": {
-    steps: [
-      "Hinge at the hips until your torso is roughly parallel to the floor. Knees slightly bent.",
-      "Grip the bar just wider than shoulder-width. Back flat, core braced.",
-      "Pull the bar to your lower chest/upper stomach. Lead with your elbows.",
-      "Lower with control. Don't let your back round as you fatigue."
-    ],
-    note: "One of the best back exercises in the gym. The hip hinge position is the same as your deadlift setup — good reinforcement."
-  },
-  "Cable face pull": {
-    steps: [
-      "Set cable at head height or slightly above. Use a rope attachment.",
-      "Grab with both hands, step back so there's tension. Stand tall.",
-      "Pull the rope toward your face, separating your hands as you pull — elbows high and wide.",
-      "Hold briefly at your ears, then extend slowly back out."
-    ],
-    note: "Underrated. Directly counteracts all the pressing you do and keeps your shoulders healthy long-term. Don't skip it."
-  },
-  "Dumbbell bicep curl": {
-    steps: [
-      "Stand with dumbbells at your sides, palms facing forward.",
-      "Curl both up — or alternate — keeping your elbows pinned to your sides.",
-      "Full range: all the way up, all the way down.",
-      "Slow on the way down. That's where half the work happens."
-    ],
-    note: "Go lighter than you think. If your elbows are swinging forward, the weight is too heavy."
+    steps: ["Hang from pull-up bar, overhand grip.", "Brace core and pull knees toward your chest.", "Hold briefly at top, lower with control.", "No swinging. Use the captain's chair if you can't control the swing."],
+    note: "Progress to straight-leg raises when this gets easy."
   },
   "Plank": {
-    steps: [
-      "Forearms on the floor, elbows under shoulders. Toes on the floor.",
-      "Body in a straight line — don't let your hips sag or pike up.",
-      "Squeeze everything: glutes, quads, core. Breathe normally.",
-      "Build from 30 seconds toward 60. Quality over time."
-    ],
-    note: "Don't just hold it. Actively squeeze every muscle. A 30-second plank where you're truly braced beats a 90-second slack one."
+    steps: ["Forearms on floor, elbows under shoulders.", "Straight line head to heels. Hips don't sag or pike.", "Squeeze glutes, quads, core. Breathe normally.", "Build from 30 sec toward 60."],
+    note: "Actively squeeze every muscle. 30 braced seconds beats 90 slack ones."
+  },
+  "Romanian deadlift": {
+    steps: ["Bar in hands just outside hips, feet hip-width.", "Push hips BACK, not down. Bar stays close to your legs.", "Lower until strong hamstring stretch. Back flat the whole time.", "Drive hips forward to stand. Squeeze glutes at top."],
+    note: "Hinge at the hips, don't squat. Push your hips back like closing a car door with your backside."
+  },
+  "Pull-up / Lat pulldown": {
+    steps: ["Pulldown: thighs under pad, grip wider than shoulder-width.", "Pull bar to upper chest, leading with elbows. Think: elbows into back pockets.", "Control back up to full extension.", "Pull-up: same cue - chest to bar."],
+    note: "Pulldowns build toward pull-ups. Use them interchangeably."
+  },
+  "Barbell bent-over row": {
+    steps: ["Hinge at hips, torso roughly parallel to floor. Soft knees.", "Grip just wider than shoulder-width. Back flat, core braced.", "Pull to lower chest or upper stomach. Lead with elbows.", "Lower with control. Don't round as you fatigue."],
+    note: "One of the best back exercises in the gym. The hip hinge here reinforces your deadlift pattern."
+  },
+  "Leg curl (machine)": {
+    steps: ["Face down, pad just above heels.", "Curl heels toward backside as far as machine allows.", "Hold 1 second at top. 3 seconds down.", "Don't let hips lift off the pad."],
+    note: "Isolates hamstrings. Complements RDLs which hit the stretched position."
+  },
+  "Barbell hip thrust": {
+    steps: ["Upper back against bench. Bar over hips - use a pad.", "Feet flat, hip-width, knees bent.", "Drive through heels, thrust hips up. Squeeze glutes hard at top.", "Straight line from knees to shoulders. Don't hyperextend lower back.", "Lower slowly and repeat."],
+    note: "Best glute exercise in the gym. Load it progressively - responds very well to weight."
+  },
+  "Cable face pull": {
+    steps: ["Cable at head height or above. Rope attachment.", "Step back for tension. Stand tall.", "Pull rope toward your face, hands separating - elbows high and wide.", "Hold briefly at ears, extend slowly back out."],
+    note: "Don't skip this. Counteracts all your pressing and keeps shoulders healthy long-term."
   },
   "Cable woodchop": {
-    steps: [
-      "Set cable at the top. Stand sideways to the machine.",
-      "Grab the handle with both hands, arms extended.",
-      "Pull down and across your body in a diagonal — like chopping wood.",
-      "Rotate through your torso. Hips can turn slightly. Control back up."
-    ],
-    note: "Trains rotational core strength — the kind you actually use in real life and in sport."
+    steps: ["Cable at the top. Stand sideways to the machine.", "Both hands on handle, arms extended.", "Pull down and across your body diagonally.", "Rotate through your torso. Control back up."],
+    note: "Rotational core strength - the kind you actually use."
   },
-  "Ab wheel rollout": {
-    steps: [
-      "Kneel on the floor with the ab wheel in front of you.",
-      "Roll forward slowly, keeping your back flat — don't let it arch.",
-      "Go as far as you can without your back sagging, then pull back in with your core.",
-      "Start with short rolls. Full extension comes with time."
-    ],
-    note: "Harder than it looks. If you feel it in your lower back instead of your core, shorten your range."
+  "Trap bar deadlift": {
+    steps: ["Step inside the trap bar, feet hip-width. Grab the handles.", "Hips above knees, chest up, back flat. More upright than conventional.", "Big breath, brace hard. Push the floor away - think leg press not pull.", "Hips and shoulders rise together. Stand tall.", "Lower with control by hinging back at hips."],
+    note: "More quad-friendly than conventional, easier on the lower back. Great total body anchor for Day 3."
   },
-  "Goblet squat": {
-    steps: [
-      "Hold a dumbbell or kettlebell at your chest, both hands cupping it.",
-      "Feet shoulder-width, toes out slightly.",
-      "Squat down keeping the weight close to your chest and your elbows inside your knees.",
-      "Drive through your heels to stand. Keep your chest tall."
-    ],
-    note: "Great teaching tool for squat mechanics. The weight in front forces you to stay upright."
+  "Bulgarian split squat": {
+    steps: ["Stand 2 feet in front of a bench. Rear foot on bench, laces down.", "Front foot far enough forward that shin stays vertical when you lower.", "Lower back knee toward floor. Chest tall.", "Drive through front heel to stand. All reps one side, then switch."],
+    note: "Harder than it looks. Go light first - it exposes side-to-side imbalances immediately."
   },
-  "Dumbbell row": {
-    steps: [
-      "Place one knee and one hand on a bench. Other foot flat on the floor.",
-      "Hold a dumbbell in your free hand, arm hanging straight.",
-      "Pull the dumbbell up toward your hip — elbow close to your body.",
-      "Lower with control. Don't rotate your torso. Do all reps, then switch sides."
-    ],
-    note: "One of the best unilateral back exercises. Lets you load each side independently."
+  "Overhead barbell press": {
+    steps: ["Bar at shoulder height on rack. Grip just outside shoulder-width.", "Brace core hard. Don't arch lower back.", "Press straight up. Bar moves slightly back once clear of head, finishes over ears.", "Lower with control back to shoulders."],
+    note: "Vertical push - completely different demand from bench. Core stability is the limiting factor early on."
+  },
+  "Chest-supported dumbbell row": {
+    steps: ["Incline bench at 45 degrees. Lie chest-down, dumbbells hanging.", "Pull dumbbells toward your hips, leading with elbows.", "Squeeze shoulder blades together at top.", "Lower slowly - full stretch at the bottom."],
+    note: "Chest support removes lower back fatigue and eliminates momentum. Pure back work."
   },
   "Dumbbell shoulder press": {
-    steps: [
-      "Sit on a bench with back support, dumbbells at shoulder height, palms facing forward.",
-      "Press straight up until arms are nearly extended — don't lock out.",
-      "Lower slowly back to shoulder height.",
-      "Keep your lower back from arching — brace your core."
-    ],
-    note: "Seated keeps it strict. If you're using momentum to get the weight up, go lighter."
+    steps: ["Seated, back supported. Dumbbells at shoulder height, palms forward.", "Press straight up until arms nearly extended.", "Lower slowly back to shoulder height.", "Brace core - don't let lower back arch."],
+    note: "If you're using momentum to get the weight up, go lighter."
   },
-  "Battle ropes": {
-    steps: [
-      "Stand with feet shoulder-width, slight bend in knees, hips back — athletic stance.",
-      "Hold one end of each rope. Alternate arms up and down to create waves.",
-      "Keep the waves going continuously. Drive from your shoulders and arms.",
-      "Variation: double waves (both arms together), slams, or circles."
-    ],
-    note: "Pure conditioning. 30-40 seconds all-out will humble you. Stay low in your stance."
+  "Dumbbell row": {
+    steps: ["One knee and hand on bench. Other foot flat on floor.", "Dumbbell hanging straight down.", "Pull toward hip - elbow close to body.", "Lower with control. All reps then switch."],
+    note: "One of the best unilateral back exercises."
   },
-  "Kettlebell swing": {
-    steps: [
-      "Stand with feet slightly wider than hips, kettlebell on the floor in front of you.",
-      "Hinge at the hips, grab the bell, hike it back between your legs like a football snap.",
-      "Drive your hips forward explosively — the bell floats up to chest height. Not a squat.",
-      "Let it swing back between your legs and repeat. The power comes from the hip snap, not your arms."
-    ],
-    note: "One of the best fat-burning exercises in the gym. It's a hip hinge, not a squat. Arms are just a rope connecting you to the bell."
+  "Ab wheel rollout": {
+    steps: ["Kneel with ab wheel in front of you.", "Roll forward slowly - back stays flat, don't let it arch.", "Go as far as you can without sagging, pull back with your core.", "Start short. Full extension comes with time."],
+    note: "If you feel it in your lower back instead of your core, shorten your range."
   },
-  "Box jump": {
-    steps: [
-      "Stand in front of a box, feet shoulder-width apart.",
-      "Dip slightly and swing your arms, then explode up and land softly on the box with both feet.",
-      "Land in a partial squat — knees bent, quiet landing.",
-      "Step down (don't jump down). Reset and repeat."
-    ],
-    note: "Start with a low box. Landing mechanics matter more than height. Quiet landing = good mechanics."
+  "Goblet squat": {
+    steps: ["Dumbbell or kettlebell at your chest, both hands cupping it.", "Feet shoulder-width, toes slightly out.", "Squat down, elbows inside knees, weight close to chest.", "Drive through heels to stand. Chest stays tall."],
+    note: "Front-loaded weight forces you to stay upright. Great for squat mechanics."
   },
   "Dumbbell thruster": {
-    steps: [
-      "Hold dumbbells at shoulder height, palms facing in.",
-      "Squat down to parallel, then as you drive up, press the dumbbells overhead in one fluid motion.",
-      "Arms fully extended at the top, then lower the dumbbells back to shoulders as you descend into the next squat.",
-      "One continuous movement — squat and press together."
-    ],
-    note: "Brutal. Hits basically everything. Go lighter than you think — these catch up to you fast in a circuit."
+    steps: ["Dumbbells at shoulder height, palms facing in.", "Squat to parallel, then as you drive up, press dumbbells overhead in one fluid motion.", "Arms fully extended at top.", "Lower to shoulders as you descend into next squat. One continuous movement."],
+    note: "Hits basically everything. Go lighter than you think - these catch up fast in a circuit."
   },
-  "Farmer's carry": {
-    steps: [
-      "Pick up heavy dumbbells or kettlebells in each hand.",
-      "Stand tall — chest up, shoulders back, core braced.",
-      "Walk for the prescribed distance or time. Don't let the weights pull your shoulders forward.",
-      "Short controlled steps. Breathe normally."
-    ],
-    note: "Deceptively simple and extremely effective. Builds grip strength, core stability, and conditioning simultaneously."
+  "Kettlebell swing": {
+    steps: ["Feet slightly wider than hips. Bell on floor in front.", "Hinge, grab bell, hike it back between legs like a football snap.", "Drive hips forward explosively - bell floats to chest height.", "Let it swing back and repeat. Power from the hip snap, not your arms."],
+    note: "It is a hip hinge, not a squat. Arms are just a rope connecting you to the bell."
+  },
+  "Box jump": {
+    steps: ["Stand in front of box, feet shoulder-width.", "Dip, swing arms, explode up. Land softly with both feet on box.", "Land in partial squat - quiet landing.", "Step down. Reset and repeat."],
+    note: "Start with a low box. Quiet landing equals good mechanics."
+  },
+  "Battle ropes": {
+    steps: ["Feet shoulder-width, knees bent, hips back - athletic stance.", "One end in each hand. Alternate arms up and down for waves.", "Drive from shoulders and arms. Keep waves continuous.", "Variation: double waves, slams, or circles."],
+    note: "30-40 seconds all-out will humble you. Stay low in your stance."
   },
   "Medicine ball slam": {
-    steps: [
-      "Stand with feet shoulder-width, hold a medicine ball overhead with both hands.",
-      "Brace your core and slam the ball into the floor as hard as you can.",
-      "Hinge at the hips as you slam — put your whole body into it.",
-      "Catch the bounce (or pick it up) and repeat."
-    ],
-    note: "Good for power and a great stress release. Heavier ball = more resistance. Lighter = faster reps."
+    steps: ["Feet shoulder-width, ball overhead with both hands.", "Brace core and slam ball into floor as hard as you can.", "Hinge at hips as you slam - whole body into it.", "Catch the bounce or pick up and repeat."],
+    note: "Heavier ball equals more resistance. Lighter equals faster reps."
   },
-  "Cable row": {
-    steps: [
-      "Sit at the cable row machine, feet on the platform, slight bend in knees.",
-      "Grab the handle, sit tall with a flat back.",
-      "Pull toward your stomach, leading with your elbows. Squeeze your shoulder blades together at the end.",
-      "Extend arms back slowly — feel the stretch in your back. Don't round forward."
-    ],
-    note: "Sit tall the whole time. Rounding forward at the start to get more range isn't more range — it's just bad posture."
-  },
+  "Farmer carry": {
+    steps: ["Heavy dumbbells or kettlebells in each hand.", "Stand tall - chest up, shoulders back, core braced.", "Walk for the distance or time. Don't let weight pull shoulders forward.", "Short controlled steps. Breathe normally."],
+    note: "Builds grip, core stability, and conditioning simultaneously."
+  }
 };
 
-const data = {
+var data = {
   1: {
-    phase: "Phase 1: Foundation", sub: "3 days/week · light load · learn the patterns",
+    phase: "Phase 1: Foundation", sub: "3 days/week · 50 min target",
     days: [
-      { label: "Day 1 — front chain",
-        note: "Front chain = quads, chest, anterior shoulders. Rest 90 sec between sets.",
-        warmup: [["5 min cardio","treadmill or bike","Easy pace — just get warm"],["Goblet squat","2 sets × 10 reps, light","Warmup pattern for the squat"]],
-        main: [
-          ["Barbell back squat","3 sets × 8 reps","Light. Focus on depth and keeping your chest up."],
-          ["Flat barbell bench press","3 sets × 8 reps","Shoulder blades pinched back, controlled descent"],
-          ["Leg press","3 sets × 10 reps","Feet shoulder-width, full range"],
-          ["Incline dumbbell press","3 sets × 10 reps","30-45 degree incline"],
-        ],
-        accessory: [
-          ["Dumbbell lateral raise","3 sets × 12 reps","Light dumbbells — 3 sec down"],
-          ["Cable tricep pushdown","3 sets × 12 reps","Elbows glued to your sides"],
-          ["Dumbbell walking lunge","2 sets × 10 each leg","Light — focus on form"],
-        ],
-        core: [
-          ["Plank","3 sets × 30 sec","Squeeze everything"],
-          ["Hanging knee raise","3 sets × 10 reps","Controlled — no swinging"],
-        ]
+      { note: "Quads, chest, anterior shoulders. 90s rest on main lifts, 60s accessories.",
+        warmup: [["5 min cardio","treadmill or bike","Easy - just get warm"],["Goblet squat","2 x 10, light","Warmup pattern only"]],
+        main: [["Barbell back squat","3 x 8","Light. Depth and chest position."],["Flat barbell bench press","3 x 8","Shoulder blades pinched, controlled descent"],["Leg press","3 x 10","Full range, feet shoulder-width"],["Incline dumbbell press","3 x 10","30-45 degree incline"]],
+        accessory: [["Dumbbell lateral raise","3 x 12","Light - 3 sec down"],["Cable tricep pushdown","3 x 12","Elbows glued to sides"]],
+        core: [["Plank","3 x 30 sec","Squeeze everything"],["Hanging knee raise","3 x 10","No swinging"]]
       },
-      { label: "Day 2 — rear chain",
-        note: "Rear chain = hamstrings, glutes, back, posterior shoulders. Rest 90 sec between sets.",
-        warmup: [["5 min cardio","treadmill or bike","Easy pace"],["Romanian deadlift","2 sets × 10 reps, empty bar","Groove the hip hinge before loading"]],
-        main: [
-          ["Romanian deadlift","3 sets × 8 reps","Hip hinge — push hips back, back flat"],
-          ["Pull-up / Lat pulldown","3 sets × 8 reps","Lead with elbows, chest to bar"],
-          ["Barbell bent-over row","3 sets × 8 reps","Torso roughly parallel, pull to lower chest"],
-          ["Leg curl (machine)","3 sets × 10 reps","3 seconds down"],
-        ],
-        accessory: [
-          ["Barbell hip thrust","3 sets × 10 reps","Squeeze hard at the top"],
-          ["Cable face pull","3 sets × 15 reps","Elbows high and wide — don't skip this"],
-          ["Dumbbell bicep curl","3 sets × 12 reps","Full range, slow on the way down"],
-        ],
-        core: [
-          ["Plank","3 sets × 30 sec",""],
-          ["Cable woodchop","3 sets × 10 each side","Rotate through your torso"],
-        ]
+      { note: "Hamstrings, glutes, back, rear shoulders. 90s rest main lifts, 60s accessories.",
+        warmup: [["5 min cardio","treadmill or bike","Easy"],["Romanian deadlift","2 x 10, empty bar","Groove the hinge before loading"]],
+        main: [["Romanian deadlift","3 x 8","Hip hinge - push hips back, back flat"],["Pull-up / Lat pulldown","3 x 8","Lead with elbows, chest to bar"],["Barbell bent-over row","3 x 8","Torso parallel, pull to lower chest"],["Leg curl (machine)","3 x 10","3 seconds down"]],
+        accessory: [["Barbell hip thrust","3 x 10","Squeeze hard at the top"],["Cable face pull","3 x 15","Elbows high and wide - don't skip"]],
+        core: [["Plank","3 x 30 sec",""],["Cable woodchop","3 x 10 each side","Rotate through your torso"]]
       },
-      { label: "Day 3 — full body",
-        note: "Full body compound day. Moderate weight, controlled tempo. Rest 2 min between main sets.",
+      { note: "Different patterns from Days 1 and 2. No repeated movements. 90s rest main, 60s accessories.",
         warmup: [["5 min cardio","any machine","Easy"]],
-        main: [
-          ["Conventional deadlift","3 sets × 5 reps","Heavier than RDL. Bar close to body the whole way."],
-          ["Barbell back squat","3 sets × 6 reps","Slightly heavier than Day 1"],
-          ["Flat barbell bench press","3 sets × 6 reps","Slightly heavier than Day 1"],
-          ["Barbell bent-over row","3 sets × 6 reps","Heavier — keep back flat"],
-        ],
-        accessory: [
-          ["Dumbbell shoulder press","3 sets × 10 reps","Seated, controlled"],
-          ["Dumbbell row","3 sets × 10 each side","One knee on bench"],
-          ["Cable row","3 sets × 12 reps","Sit tall, squeeze at the end"],
-        ],
-        core: [
-          ["Ab wheel rollout","3 sets × 8 reps","Short range first — don't let back sag"],
-          ["Plank","2 sets × 40 sec",""],
-        ]
+        main: [["Trap bar deadlift","3 x 8","Push the floor away - more upright than conventional"],["Bulgarian split squat","3 x 8 each side","Rear foot on bench - go light first"],["Overhead barbell press","3 x 8","Brace core hard - don't arch"],["Chest-supported dumbbell row","3 x 10","Chest-down on incline bench, strict pull"]],
+        accessory: [["Dumbbell shoulder press","3 x 10","Seated, controlled"],["Dumbbell row","3 x 10 each side","One knee on bench"]],
+        core: [["Ab wheel rollout","3 x 8","Short range - back stays flat"],["Plank","2 x 40 sec",""]]
       },
-      { label: "Day 4 — metabolic circuit",
-        note: "Bonus day. 40 sec work / 20 sec rest per exercise. Complete 4 rounds. 90 sec rest between rounds. This is the fat burner.",
-        warmup: [["5 min cardio","bike or treadmill","Build to a moderate pace"]],
-        main: [
-          ["Goblet squat","40 sec on / 20 sec rest","Continuous reps — moderate weight"],
-          ["Dumbbell thruster","40 sec on / 20 sec rest","Squat into press — one movement"],
-          ["Kettlebell swing","40 sec on / 20 sec rest","Hip snap — not a squat"],
-          ["Dumbbell row","40 sec on / 20 sec rest","Alternate sides or do 20 sec each"],
-          ["Battle ropes","40 sec on / 20 sec rest","All out effort"],
-          ["Box jump","40 sec on / 20 sec rest","Step down between reps"],
-          ["Medicine ball slam","40 sec on / 20 sec rest","Full body into every slam"],
-          ["Farmer's carry","40 sec walk","Heavy dumbbells, walk the floor"],
-        ],
+      { note: "Bonus day. 40 sec work / 20 sec rest. 4 rounds. 90 sec rest between rounds. Tap check when each exercise done.",
+        warmup: [["5 min cardio","bike or rower","Build to moderate pace"]],
+        main: [["Goblet squat","40 sec on / 20 sec rest","Moderate weight, continuous reps"],["Dumbbell thruster","40 sec on / 20 sec rest","Squat into press - one fluid movement"],["Kettlebell swing","40 sec on / 20 sec rest","Hip snap - not a squat"],["Chest-supported dumbbell row","40 sec on / 20 sec rest","Strict even when tired"],["Battle ropes","40 sec on / 20 sec rest","All out"],["Box jump","40 sec on / 20 sec rest","Soft landing - step down between reps"],["Medicine ball slam","40 sec on / 20 sec rest","Whole body into every slam"],["Farmer carry","40 sec walk","Heavy - chest up, core braced"]],
         accessory: [],
-        core: [
-          ["Plank","2 sets × 45 sec","Finish strong"],
-        ]
+        core: [["Plank","2 x 45 sec","Finish strong"]]
       }
     ]
   },
   3: {
-    phase: "Phase 2: Building", sub: "3 days/week · add weight every 2 weeks",
+    phase: "Phase 2: Building", sub: "3 days/week · add weight · 50 min target",
     days: [
-      { label: "Day 1 — front chain",
-        note: "Add weight to your main lifts from Phase 1. If 3×8 felt easy, go heavier. Rest 90 sec.",
-        warmup: [["5 min cardio","",""],["Goblet squat","2 sets × 10, moderate",""]],
-        main: [
-          ["Barbell back squat","4 sets × 6 reps","Add 10-20 lbs from Phase 1"],
-          ["Flat barbell bench press","4 sets × 6 reps","Add 10 lbs from Phase 1"],
-          ["Leg press","3 sets × 12 reps","Add weight"],
-          ["Incline dumbbell press","3 sets × 10 reps","Add 5 lbs per dumbbell"],
-        ],
-        accessory: [
-          ["Dumbbell lateral raise","3 sets × 15 reps","Still light — add 1 rep, not weight"],
-          ["Cable tricep pushdown","3 sets × 15 reps",""],
-          ["Dumbbell walking lunge","3 sets × 12 each leg",""],
-        ],
-        core: [
-          ["Plank","3 sets × 45 sec",""],
-          ["Hanging knee raise","3 sets × 12 reps",""],
-          ["Ab wheel rollout","2 sets × 10 reps",""],
-        ]
+      { note: "Add weight to everything from Phase 1. 4 sets on main lifts. 90s rest main, 60s accessories.",
+        warmup: [["5 min cardio","",""],["Goblet squat","2 x 10, moderate",""]],
+        main: [["Barbell back squat","4 x 6","Add 10-20 lbs from Phase 1"],["Flat barbell bench press","4 x 6","Add 10 lbs"],["Leg press","3 x 12","Add weight"],["Incline dumbbell press","3 x 10","Add 5 lbs per dumbbell"]],
+        accessory: [["Dumbbell lateral raise","3 x 15","Add a rep, not weight yet"],["Cable tricep pushdown","3 x 15",""]],
+        core: [["Plank","3 x 45 sec",""],["Hanging knee raise","3 x 12",""],["Ab wheel rollout","2 x 10",""]]
       },
-      { label: "Day 2 — rear chain",
-        note: "Add weight to RDL and deadlift. Back work goes up in reps. Rest 90 sec.",
-        warmup: [["5 min cardio","",""],["Romanian deadlift","2 sets × 8, light",""]],
-        main: [
-          ["Romanian deadlift","4 sets × 8 reps","Add 10-20 lbs"],
-          ["Pull-up / Lat pulldown","4 sets × 8 reps","Add weight or band assistance"],
-          ["Barbell bent-over row","4 sets × 8 reps","Add weight"],
-          ["Leg curl (machine)","3 sets × 12 reps",""],
-        ],
-        accessory: [
-          ["Barbell hip thrust","3 sets × 12 reps","Add weight — this one handles it well"],
-          ["Cable face pull","3 sets × 15 reps",""],
-          ["Dumbbell bicep curl","3 sets × 12 reps","Add 5 lbs"],
-        ],
-        core: [
-          ["Plank","3 sets × 45 sec",""],
-          ["Cable woodchop","3 sets × 12 each side",""],
-        ]
+      { note: "RDL and row weights go up. Hip thrust responds well to load. 90s rest main, 60s accessories.",
+        warmup: [["5 min cardio","",""],["Romanian deadlift","2 x 8, light",""]],
+        main: [["Romanian deadlift","4 x 8","Add 10-20 lbs"],["Pull-up / Lat pulldown","4 x 8","Add weight or reduce band assistance"],["Barbell bent-over row","4 x 8","Add weight"],["Leg curl (machine)","3 x 12",""]],
+        accessory: [["Barbell hip thrust","3 x 12","Add weight - responds well"],["Cable face pull","3 x 15",""]],
+        core: [["Plank","3 x 45 sec",""],["Cable woodchop","3 x 12 each side",""]]
       },
-      { label: "Day 3 — full body",
-        note: "Main lifts go heavier. Accessories stay clean. Rest 2 min on compounds.",
+      { note: "Trap bar is your strength anchor today. Heavier across the board. 2 min rest on trap bar, 90s everything else.",
         warmup: [["5 min cardio","",""]],
-        main: [
-          ["Conventional deadlift","4 sets × 5 reps","Keep adding weight. Form is everything."],
-          ["Barbell back squat","4 sets × 5 reps",""],
-          ["Flat barbell bench press","4 sets × 5 reps",""],
-          ["Barbell bent-over row","4 sets × 6 reps",""],
-        ],
-        accessory: [
-          ["Dumbbell shoulder press","3 sets × 12 reps",""],
-          ["Dumbbell row","3 sets × 12 each side",""],
-          ["Cable row","3 sets × 12 reps",""],
-        ],
-        core: [
-          ["Ab wheel rollout","3 sets × 10 reps",""],
-          ["Plank","2 sets × 50 sec",""],
-          ["Cable woodchop","2 sets × 12 each side",""],
-        ]
+        main: [["Trap bar deadlift","4 x 6","Add weight - moves fast early on"],["Bulgarian split squat","3 x 10 each side","Add dumbbells if bodyweight is easy"],["Overhead barbell press","4 x 6","Add weight"],["Chest-supported dumbbell row","4 x 10","Add weight"]],
+        accessory: [["Dumbbell shoulder press","3 x 12",""],["Dumbbell row","3 x 12 each side",""]],
+        core: [["Ab wheel rollout","3 x 10",""],["Plank","2 x 50 sec",""],["Cable woodchop","2 x 12 each side",""]]
       },
-      { label: "Day 4 — metabolic circuit",
-        note: "Same structure, heavier weights. 5 rounds instead of 4. 90 sec rest between rounds.",
+      { note: "5 rounds. Heavier weights throughout. 40 sec on / 20 sec rest. 90 sec between rounds.",
         warmup: [["5 min cardio","build the pace",""]],
-        main: [
-          ["Goblet squat","40 sec / 20 sec rest","Heavier than Phase 1"],
-          ["Dumbbell thruster","40 sec / 20 sec rest",""],
-          ["Kettlebell swing","40 sec / 20 sec rest","Heavier bell"],
-          ["Dumbbell row","40 sec / 20 sec rest",""],
-          ["Battle ropes","40 sec / 20 sec rest",""],
-          ["Box jump","40 sec / 20 sec rest","Higher box if ready"],
-          ["Medicine ball slam","40 sec / 20 sec rest","Heavier ball"],
-          ["Farmer's carry","40 sec walk","Heavier dumbbells"],
-        ],
+        main: [["Goblet squat","40 sec on / 20 sec rest","Heavier than Phase 1"],["Dumbbell thruster","40 sec on / 20 sec rest",""],["Kettlebell swing","40 sec on / 20 sec rest","Heavier bell"],["Chest-supported dumbbell row","40 sec on / 20 sec rest",""],["Battle ropes","40 sec on / 20 sec rest",""],["Box jump","40 sec on / 20 sec rest","Higher box if ready"],["Medicine ball slam","40 sec on / 20 sec rest","Heavier ball"],["Farmer carry","40 sec walk","Heavier dumbbells"]],
         accessory: [],
-        core: [["Plank","2 sets × 50 sec",""]]
+        core: [["Plank","2 x 50 sec",""]]
       }
     ]
   },
   5: {
-    phase: "Phase 3: Loading", sub: "3 days/week · progressive overload · 5/3/1 style",
+    phase: "Phase 3: Loading", sub: "3 days/week · find your real working weights",
     days: [
-      { label: "Day 1 — front chain",
-        note: "Working sets get heavier. Start to find your real working weights. Rest 2 min on main lifts.",
-        warmup: [["5 min cardio","",""],["Goblet squat","2 sets × 8",""]],
-        main: [
-          ["Barbell back squat","5 sets × 5 reps","Should be genuinely challenging by set 4-5"],
-          ["Flat barbell bench press","5 sets × 5 reps",""],
-          ["Leg press","4 sets × 10 reps","Heavy — last 2 reps should be hard"],
-          ["Incline dumbbell press","3 sets × 12 reps",""],
-        ],
-        accessory: [
-          ["Dumbbell lateral raise","4 sets × 15 reps",""],
-          ["Cable tricep pushdown","4 sets × 15 reps",""],
-          ["Dumbbell walking lunge","3 sets × 14 each leg",""],
-        ],
-        core: [
-          ["Ab wheel rollout","3 sets × 12 reps",""],
-          ["Hanging knee raise","3 sets × 15 reps",""],
-          ["Plank","2 sets × 60 sec",""],
-        ]
+      { note: "Working sets should be genuinely hard by set 4-5. 2 min rest on main lifts, 60s accessories.",
+        warmup: [["5 min cardio","",""],["Goblet squat","2 x 8",""]],
+        main: [["Barbell back squat","5 x 5","Challenging by last 2 sets"],["Flat barbell bench press","5 x 5",""],["Leg press","4 x 10","Last 2 reps should be hard"],["Incline dumbbell press","3 x 12",""]],
+        accessory: [["Dumbbell lateral raise","4 x 15",""],["Cable tricep pushdown","4 x 15",""]],
+        core: [["Ab wheel rollout","3 x 12",""],["Hanging knee raise","3 x 15",""],["Plank","2 x 60 sec",""]]
       },
-      { label: "Day 2 — rear chain",
-        note: "Deadlift is the anchor. Everything else supports it. Rest 2 min on main lifts.",
-        warmup: [["5 min cardio","",""],["Romanian deadlift","2 sets × 8, moderate",""]],
-        main: [
-          ["Conventional deadlift","5 sets × 3 reps","Heavy. This is your prime strength movement."],
-          ["Romanian deadlift","3 sets × 10 reps","Lighter — this is accessory work now"],
-          ["Pull-up / Lat pulldown","4 sets × 8 reps","Add weight or reps"],
-          ["Barbell bent-over row","4 sets × 8 reps",""],
-          ["Leg curl (machine)","3 sets × 12 reps",""],
-        ],
-        accessory: [
-          ["Barbell hip thrust","4 sets × 10 reps","Loading up"],
-          ["Cable face pull","3 sets × 20 reps","High reps, light weight — shoulder health"],
-          ["Dumbbell bicep curl","3 sets × 15 reps",""],
-        ],
-        core: [
-          ["Cable woodchop","3 sets × 15 each side",""],
-          ["Plank","3 sets × 60 sec",""],
-        ]
+      { note: "RDL is the anchor - back flat is non-negotiable at any weight. 2 min rest on main lifts.",
+        warmup: [["5 min cardio","",""],["Romanian deadlift","2 x 8, moderate",""]],
+        main: [["Romanian deadlift","5 x 6","Heavy - back flat always"],["Pull-up / Lat pulldown","4 x 8","Add weight"],["Barbell bent-over row","4 x 8",""],["Leg curl (machine)","3 x 12",""]],
+        accessory: [["Barbell hip thrust","4 x 10","Loading up"],["Cable face pull","3 x 20","High reps, light - shoulder health"]],
+        core: [["Cable woodchop","3 x 15 each side",""],["Plank","3 x 60 sec",""]]
       },
-      { label: "Day 3 — full body",
-        note: "Heavier across the board. Compete with your Phase 2 numbers.",
+      { note: "Trap bar is your heavy anchor. Push the weight. 2 min rest on trap bar and OHP.",
         warmup: [["5 min cardio","",""]],
-        main: [
-          ["Conventional deadlift","3 sets × 3 reps","Max effort — heavy"],
-          ["Barbell back squat","3 sets × 5 reps","Heavy"],
-          ["Flat barbell bench press","3 sets × 5 reps","Heavy"],
-          ["Barbell bent-over row","4 sets × 6 reps","Heavy"],
-        ],
-        accessory: [
-          ["Dumbbell shoulder press","3 sets × 12 reps",""],
-          ["Dumbbell row","4 sets × 10 each side",""],
-          ["Cable row","3 sets × 15 reps",""],
-        ],
-        core: [
-          ["Ab wheel rollout","3 sets × 12 reps",""],
-          ["Cable woodchop","3 sets × 15 each side",""],
-          ["Plank","2 sets × 60 sec",""],
-        ]
+        main: [["Trap bar deadlift","5 x 4","Heaviest trap bar yet"],["Bulgarian split squat","4 x 10 each side","Dumbbells in hand"],["Overhead barbell press","4 x 5","Heavy - core tight"],["Chest-supported dumbbell row","4 x 12",""]],
+        accessory: [["Dumbbell shoulder press","3 x 12",""],["Dumbbell row","4 x 10 each side",""]],
+        core: [["Ab wheel rollout","3 x 12",""],["Cable woodchop","3 x 15 each side",""],["Plank","2 x 60 sec",""]]
       },
-      { label: "Day 4 — metabolic circuit",
-        note: "6 rounds. 40 sec on / 20 sec rest. 90 sec between rounds. This should be hard.",
-        warmup: [["5 min cardio","build the pace",""]],
-        main: [
-          ["Goblet squat","40 sec / 20 sec rest","Heavy goblet"],
-          ["Dumbbell thruster","40 sec / 20 sec rest",""],
-          ["Kettlebell swing","40 sec / 20 sec rest",""],
-          ["Dumbbell row","40 sec / 20 sec rest",""],
-          ["Battle ropes","40 sec / 20 sec rest",""],
-          ["Box jump","40 sec / 20 sec rest",""],
-          ["Medicine ball slam","40 sec / 20 sec rest",""],
-          ["Farmer's carry","40 sec walk","Max weight you can walk with good posture"],
-        ],
+      { note: "6 rounds. 40 sec on / 20 sec rest. 90 sec between rounds. This should be hard.",
+        warmup: [["5 min cardio","build to a strong pace",""]],
+        main: [["Goblet squat","40 sec on / 20 sec rest","Heavy"],["Dumbbell thruster","40 sec on / 20 sec rest",""],["Kettlebell swing","40 sec on / 20 sec rest",""],["Chest-supported dumbbell row","40 sec on / 20 sec rest",""],["Battle ropes","40 sec on / 20 sec rest",""],["Box jump","40 sec on / 20 sec rest",""],["Medicine ball slam","40 sec on / 20 sec rest",""],["Farmer carry","40 sec walk","Max weight with good posture"]],
         accessory: [],
-        core: [["Ab wheel rollout","2 sets × 12 reps",""],["Plank","1 set × 60 sec",""]]
+        core: [["Ab wheel rollout","2 x 12",""],["Plank","1 x 60 sec",""]]
       }
     ]
   },
   7: {
     phase: "Phase 4: Performance", sub: "3 days/week · peak strength + conditioning",
     days: [
-      { label: "Day 1 — front chain",
-        note: "You know the weights now. Push them. Rest 2 min on compounds.",
-        warmup: [["5 min cardio","",""],["Goblet squat","2 sets × 6, moderate",""]],
-        main: [
-          ["Barbell back squat","5 sets × 3 reps","Heaviest weights yet"],
-          ["Flat barbell bench press","5 sets × 3 reps",""],
-          ["Leg press","4 sets × 12 reps",""],
-          ["Incline dumbbell press","4 sets × 10 reps",""],
-        ],
-        accessory: [
-          ["Dumbbell lateral raise","4 sets × 15 reps",""],
-          ["Cable tricep pushdown","4 sets × 15 reps",""],
-          ["Dumbbell walking lunge","3 sets × 16 each leg",""],
-        ],
-        core: [
-          ["Ab wheel rollout","3 sets × 15 reps",""],
-          ["Hanging knee raise","3 sets × 15 reps",""],
-          ["Plank","3 sets × 60 sec",""],
-        ]
+      { note: "Heaviest weights of the program. You know the movements - load them. 2 min rest.",
+        warmup: [["5 min cardio","",""],["Goblet squat","2 x 6, moderate",""]],
+        main: [["Barbell back squat","5 x 3","Heaviest squat of the program"],["Flat barbell bench press","5 x 3",""],["Leg press","4 x 12",""],["Incline dumbbell press","4 x 10",""]],
+        accessory: [["Dumbbell lateral raise","4 x 15",""],["Cable tricep pushdown","4 x 15",""]],
+        core: [["Ab wheel rollout","3 x 15",""],["Hanging knee raise","3 x 15",""],["Plank","3 x 60 sec",""]]
       },
-      { label: "Day 2 — rear chain",
-        note: "Deadlift is the anchor. Hit a new heavy set. Rest 2-3 min on deadlift.",
-        warmup: [["5 min cardio","",""],["Romanian deadlift","2 × 8, moderate",""]],
-        main: [
-          ["Conventional deadlift","5 sets × 2 reps","Heavy singles and doubles now"],
-          ["Romanian deadlift","3 sets × 10 reps",""],
-          ["Pull-up / Lat pulldown","4 sets × 8 reps",""],
-          ["Barbell bent-over row","4 sets × 8 reps",""],
-          ["Leg curl (machine)","3 sets × 15 reps",""],
-        ],
-        accessory: [
-          ["Barbell hip thrust","4 sets × 12 reps",""],
-          ["Cable face pull","3 sets × 20 reps",""],
-          ["Dumbbell bicep curl","3 sets × 15 reps",""],
-        ],
-        core: [
-          ["Cable woodchop","3 sets × 15 each side",""],
-          ["Plank","3 sets × 60 sec",""],
-        ]
+      { note: "RDL at peak weight. Every set counts. 2 min rest on main lifts.",
+        warmup: [["5 min cardio","",""],["Romanian deadlift","2 x 8, moderate",""]],
+        main: [["Romanian deadlift","5 x 5","Peak load - back flat, no compromises"],["Pull-up / Lat pulldown","4 x 8",""],["Barbell bent-over row","4 x 8",""],["Leg curl (machine)","3 x 15",""]],
+        accessory: [["Barbell hip thrust","4 x 12",""],["Cable face pull","3 x 20",""]],
+        core: [["Cable woodchop","3 x 15 each side",""],["Plank","3 x 60 sec",""]]
       },
-      { label: "Day 3 — full body",
-        note: "Heavy, full body. Compete with your best numbers from the whole program.",
+      { note: "Hit personal bests on trap bar and overhead press. Compete with your best numbers.",
         warmup: [["5 min cardio","",""]],
-        main: [
-          ["Conventional deadlift","3 sets × 2 reps","Max effort"],
-          ["Barbell back squat","3 sets × 3 reps",""],
-          ["Flat barbell bench press","3 sets × 3 reps",""],
-          ["Barbell bent-over row","4 sets × 5 reps",""],
-        ],
-        accessory: [
-          ["Dumbbell shoulder press","4 sets × 10 reps",""],
-          ["Dumbbell row","4 sets × 12 each side",""],
-          ["Cable row","4 sets × 12 reps",""],
-        ],
-        core: [
-          ["Ab wheel rollout","3 sets × 15 reps",""],
-          ["Cable woodchop","3 sets × 15 each side",""],
-          ["Plank","3 sets × 60 sec",""],
-        ]
+        main: [["Trap bar deadlift","5 x 3","Heaviest trap bar of the program"],["Bulgarian split squat","4 x 12 each side",""],["Overhead barbell press","5 x 3","Heavy - no back arch"],["Chest-supported dumbbell row","4 x 12",""]],
+        accessory: [["Dumbbell shoulder press","4 x 10",""],["Dumbbell row","4 x 12 each side",""]],
+        core: [["Ab wheel rollout","3 x 15",""],["Cable woodchop","3 x 15 each side",""],["Plank","3 x 60 sec",""]]
       },
-      { label: "Day 4 — metabolic circuit",
-        note: "6 rounds, max effort. The hardest Day 4 of the program. Earn it.",
+      { note: "6 rounds, max effort. Heaviest circuit weights of the program. Earn it.",
         warmup: [["5 min cardio","build hard",""]],
-        main: [
-          ["Goblet squat","40 sec / 20 sec rest",""],
-          ["Dumbbell thruster","40 sec / 20 sec rest",""],
-          ["Kettlebell swing","40 sec / 20 sec rest",""],
-          ["Dumbbell row","40 sec / 20 sec rest",""],
-          ["Battle ropes","40 sec / 20 sec rest","All out"],
-          ["Box jump","40 sec / 20 sec rest",""],
-          ["Medicine ball slam","40 sec / 20 sec rest",""],
-          ["Farmer's carry","40 sec walk","Heaviest of the program"],
-        ],
+        main: [["Goblet squat","40 sec on / 20 sec rest",""],["Dumbbell thruster","40 sec on / 20 sec rest",""],["Kettlebell swing","40 sec on / 20 sec rest",""],["Chest-supported dumbbell row","40 sec on / 20 sec rest",""],["Battle ropes","40 sec on / 20 sec rest","All out"],["Box jump","40 sec on / 20 sec rest",""],["Medicine ball slam","40 sec on / 20 sec rest",""],["Farmer carry","40 sec walk","Heaviest of the program"]],
         accessory: [],
-        core: [["Ab wheel rollout","2 sets × 15 reps",""],["Plank","2 sets × 60 sec",""]]
+        core: [["Ab wheel rollout","2 x 15",""],["Plank","2 x 60 sec",""]]
       }
     ]
   }
 };
 
-let currentWeek = 1, currentDay = 0;
-let checked = {};
-try { checked = JSON.parse(localStorage.getItem('justin_checked') || '{}'); } catch(e) {}
-function save() { try { localStorage.setItem('justin_checked', JSON.stringify(checked)); } catch(e) {} }
-function getKey() { return `w${currentWeek}d${currentDay}`; }
+var dayLabels = [
+  ["Day 1", "Front chain"],
+  ["Day 2", "Rear chain"],
+  ["Day 3", "Full body"],
+  ["Day 4", "Circuit"]
+];
+
+var currentWeek = 1;
+var currentDay = 0;
+var checked = {};
+try { checked = JSON.parse(localStorage.getItem('justin_v2') || '{}'); } catch(e) {}
+
+function save() {
+  try { localStorage.setItem('justin_v2', JSON.stringify(checked)); } catch(e) {}
+}
+
+function getKey() { return 'w' + currentWeek + 'd' + currentDay; }
 
 function setWeek(w) {
   currentWeek = w;
-  document.querySelectorAll('.week-tab').forEach((t,i) => t.classList.toggle('active', [1,3,5,7][i]===w));
+  document.querySelectorAll('.week-tab').forEach(function(t, i) {
+    t.classList.toggle('active', [1,3,5,7][i] === w);
+  });
   renderDay();
 }
+
 function setDay(d) {
   currentDay = d;
-  document.querySelectorAll('.day-tab').forEach((t,i) => t.classList.toggle('active', i===d));
+  document.querySelectorAll('.day-tab').forEach(function(t, i) {
+    t.classList.toggle('active', i === d);
+  });
   renderDay();
 }
-function toggle(key, idx) {
-  checked[key+'_'+idx] = !checked[key+'_'+idx];
-  save(); renderDay();
+
+function toggle(key, idx, sectionType) {
+  var wasChecked = checked[key + '_' + idx];
+  checked[key + '_' + idx] = !wasChecked;
+  save();
+  if (!wasChecked && sectionType !== 'warmup') {
+    var secs = currentDay === 3 ? 20 : (restTimes[sectionType] || 90);
+    startRest(secs);
+  } else {
+    skipRest();
+  }
+  renderDay();
 }
+
 function resetDay() {
-  const key = getKey();
-  Object.keys(checked).forEach(k => { if(k.startsWith(key)) delete checked[k]; });
-  save(); renderDay();
+  var key = getKey();
+  Object.keys(checked).forEach(function(k) {
+    if (k.indexOf(key) === 0) delete checked[k];
+  });
+  skipRest();
+  save();
+  renderDay();
 }
+
 function openHow(name, detail) {
-  const info = howTo[name];
+  var info = howTo[name];
   if (!info) return;
   document.getElementById('modal-name').textContent = name;
   document.getElementById('modal-detail').textContent = detail;
-  document.getElementById('modal-steps').innerHTML = info.steps.map((s,i) =>
-    `<li><span class="num">${i+1}</span><span>${s}</span></li>`).join('');
-  const noteEl = document.getElementById('modal-note');
-  if (info.note) { noteEl.style.display='block'; noteEl.innerHTML=`<strong>Note:</strong> ${info.note}`; }
-  else noteEl.style.display='none';
+  document.getElementById('modal-steps').innerHTML = info.steps.map(function(s, i) {
+    return '<li><span class="num">' + (i+1) + '</span><span>' + s + '</span></li>';
+  }).join('');
+  var noteEl = document.getElementById('modal-note');
+  if (info.note) {
+    noteEl.style.display = 'block';
+    noteEl.innerHTML = '<strong>Note:</strong> ' + info.note;
+  } else {
+    noteEl.style.display = 'none';
+  }
   document.getElementById('modal-overlay').classList.add('open');
 }
-function closeModal(e) { if(e.target===document.getElementById('modal-overlay')) closeModalDirect(); }
-function closeModalDirect() { document.getElementById('modal-overlay').classList.remove('open'); }
+
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+}
 
 function renderDay() {
-  const week = data[currentWeek];
-  const day = week.days[currentDay];
+  var week = data[currentWeek];
+  var day = week.days[currentDay];
   document.getElementById('phase-badge').textContent = week.phase;
   document.getElementById('header-sub').textContent = week.sub;
-  const key = getKey();
-  const all = [...(day.warmup||[]),...(day.main||[]),...(day.accessory||[]),...(day.core||[])];
-  const total = all.length;
-  const done = all.filter((_,i) => checked[key+'_'+i]).length;
-  document.getElementById('progress-text').textContent = `${done} of ${total} done`;
-  document.getElementById('progress-fill').style.width = (total?Math.round(done/total*100):0)+'%';
-  document.getElementById('confetti').classList.toggle('show', done===total&&total>0);
 
-  let html = '', idx = 0;
-  if(day.note) html += `<div class="note-box" style="margin-top:10px"><strong>Today:</strong> ${day.note}</div>`;
+  var key = getKey();
+  var all = (day.warmup || []).concat(day.main || []).concat(day.accessory || []).concat(day.core || []);
+  var total = all.length;
+  var done = all.filter(function(_, i) { return checked[key + '_' + i]; }).length;
+  document.getElementById('progress-text').textContent = done + ' of ' + total + ' done';
+  document.getElementById('progress-fill').style.width = (total ? Math.round(done/total*100) : 0) + '%';
+  document.getElementById('confetti').classList.toggle('show', done === total && total > 0);
 
-  function section(label, exs) {
-    if(!exs||!exs.length) return;
-    html += `<div class="section-label">${label}</div>`;
-    exs.forEach(([name,detail,tip]) => {
-      const i = idx++;
-      const isDone = checked[key+'_'+i];
-      const hasHow = !!howTo[name];
-      html += `<div class="ex-card${isDone?' done':''}">
-        <div class="check" onclick="toggle('${key}',${i})"><span class="check-icon">✓</span></div>
-        <div class="ex-info">
-          <div class="ex-name">${name}</div>
-          <div class="ex-detail">${detail}</div>
-          ${tip?`<div class="ex-tip">${tip}</div>`:''}
-          ${hasHow?`<button class="how-btn" onclick="openHow('${name.replace(/'/g,"\\'")}','${detail.replace(/'/g,"\\'")}')">▶ how to</button>`:''}
-        </div>
-      </div>`;
+  var html = '';
+  var idx = 0;
+
+  if (day.note) {
+    html += '<div class="note-box"><strong>Today:</strong> ' + day.note + '</div>';
+  }
+
+  function section(label, exs, sType) {
+    if (!exs || !exs.length) return;
+    var restSec = sType === 'warmup' ? 0 : (currentDay === 3 ? 20 : (restTimes[sType] || 90));
+    var restLabel = sType === 'warmup' ? '' : (' &middot; ' + restSec + 's rest');
+    html += '<div class="section-label">' + label + '<span class="section-rest">' + restLabel + '</span></div>';
+    exs.forEach(function(ex, localIdx) {
+      var i = idx++;
+      var isDone = checked[key + '_' + i];
+      var name = ex[0];
+      var detail = ex[1];
+      var tip = ex[2];
+      var hasHow = !!howTo[name];
+      var safeName = name.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+      var safeDetail = detail.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+      html += '<div class="ex-card' + (isDone ? ' done' : '') + '">';
+      html += '<div class="check" onclick="toggle(\'' + key + '\',' + i + ',\'' + sType + '\')"><span class="check-icon">&#10003;</span></div>';
+      html += '<div class="ex-info">';
+      html += '<div class="ex-name">' + name + '</div>';
+      html += '<div class="ex-detail">' + detail + '</div>';
+      if (tip) html += '<div class="ex-tip">' + tip + '</div>';
+      html += '<div class="btn-row">';
+      if (hasHow) html += '<button class="how-btn" onclick="openHow(\'' + safeName + '\',\'' + safeDetail + '\')">&#9654; how to</button>';
+      if (sType !== 'warmup') html += '<button class="rest-btn" onclick="startRest(' + restSec + ')">&#9201; ' + restSec + 's rest</button>';
+      html += '</div></div></div>';
     });
   }
-  section('warmup', day.warmup);
-  section('main lifts', day.main);
-  section('accessories', day.accessory);
-  section('core', day.core);
+
+  section('warmup', day.warmup, 'warmup');
+  section('main lifts', day.main, 'main');
+  section('accessories', day.accessory, 'accessory');
+  section('core', day.core, 'core');
+
   document.getElementById('exercise-list').innerHTML = html;
 }
+
 renderDay();
+
 </script>
 </body>
 </html>
