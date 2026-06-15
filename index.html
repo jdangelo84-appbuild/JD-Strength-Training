@@ -96,7 +96,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   </div>
   <div class="rest-bar" id="rest-bar">
     <span class="rest-label">Rest</span>
-    <span class="rest-countdown" id="rest-countdown">90</span>
+    <span class="rest-countdown" id="rest-countdown">75</span>
     <div class="rest-track"><div class="rest-fill" id="rest-fill" style="width:100%"></div></div>
     <span class="rest-skip" onclick="skipRest()">skip x</span>
   </div>
@@ -170,8 +170,6 @@ function skipRest() {
   document.getElementById('rest-bar').classList.remove('visible');
 }
 
-var restTimes = { warmup: 0, main: 90, accessory: 60, core: 45 };
-
 var howTo = {
   "Barbell back squat": {
     steps: ["Bar across upper traps, not your neck. Grip slightly wider than shoulder-width.", "Feet shoulder-width, toes out 15-30 degrees.", "Big breath, brace your core hard, sit back and down. Chest stays up.", "Knees track over toes. Hit parallel or just below.", "Drive through your whole foot to stand. Exhale at top."],
@@ -198,7 +196,7 @@ var howTo = {
     note: "Elbows glued to ribs is the whole cue."
   },
   "Hanging knee raise": {
-    steps: ["Hang from pull-up bar, overhand grip.", "Brace core and pull knees toward your chest.", "Hold briefly at top, lower with control.", "No swinging. Use the captain's chair if you can't control the swing."],
+    steps: ["Hang from pull-up bar, overhand grip.", "Brace core and pull knees toward your chest.", "Hold briefly at top, lower with control.", "No swinging. Use the captain's chair if you can't control it."],
     note: "Progress to straight-leg raises when this gets easy."
   },
   "Plank": {
@@ -210,12 +208,12 @@ var howTo = {
     note: "Hinge at the hips, don't squat. Push your hips back like closing a car door with your backside."
   },
   "Pull-up / Lat pulldown": {
-    steps: ["Pulldown: thighs under pad, grip wider than shoulder-width.", "Pull bar to upper chest, leading with elbows. Think: elbows into back pockets.", "Control back up to full extension.", "Pull-up: same cue - chest to bar."],
+    steps: ["Pulldown: thighs under pad, grip wider than shoulder-width.", "Pull bar to upper chest, leading with elbows - elbows into back pockets.", "Control back up to full extension.", "Pull-up: same cue - chest to bar."],
     note: "Pulldowns build toward pull-ups. Use them interchangeably."
   },
   "Barbell bent-over row": {
     steps: ["Hinge at hips, torso roughly parallel to floor. Soft knees.", "Grip just wider than shoulder-width. Back flat, core braced.", "Pull to lower chest or upper stomach. Lead with elbows.", "Lower with control. Don't round as you fatigue."],
-    note: "One of the best back exercises in the gym. The hip hinge here reinforces your deadlift pattern."
+    note: "One of the best back exercises in the gym. The hip hinge reinforces your deadlift pattern."
   },
   "Leg curl (machine)": {
     steps: ["Face down, pad just above heels.", "Curl heels toward backside as far as machine allows.", "Hold 1 second at top. 3 seconds down.", "Don't let hips lift off the pad."],
@@ -235,14 +233,14 @@ var howTo = {
   },
   "Trap bar deadlift": {
     steps: ["Step inside the trap bar, feet hip-width. Grab the handles.", "Hips above knees, chest up, back flat. More upright than conventional.", "Big breath, brace hard. Push the floor away - think leg press not pull.", "Hips and shoulders rise together. Stand tall.", "Lower with control by hinging back at hips."],
-    note: "More quad-friendly than conventional, easier on the lower back. Great total body anchor for Day 3."
+    note: "More quad-friendly than conventional, easier on the lower back. Great full body anchor."
   },
   "Bulgarian split squat": {
     steps: ["Stand 2 feet in front of a bench. Rear foot on bench, laces down.", "Front foot far enough forward that shin stays vertical when you lower.", "Lower back knee toward floor. Chest tall.", "Drive through front heel to stand. All reps one side, then switch."],
     note: "Harder than it looks. Go light first - it exposes side-to-side imbalances immediately."
   },
   "Overhead barbell press": {
-    steps: ["Bar at shoulder height on rack. Grip just outside shoulder-width.", "Brace core hard. Don't arch lower back.", "Press straight up. Bar moves slightly back once clear of head, finishes over ears.", "Lower with control back to shoulders."],
+    steps: ["Bar at shoulder height on rack. Grip just outside shoulder-width.", "Brace your core hard. Don't arch lower back.", "Press straight up. Bar moves slightly back once clear of head, finishes over ears.", "Lower with control back to shoulders."],
     note: "Vertical push - completely different demand from bench. Core stability is the limiting factor early on."
   },
   "Chest-supported dumbbell row": {
@@ -251,7 +249,7 @@ var howTo = {
   },
   "Dumbbell shoulder press": {
     steps: ["Seated, back supported. Dumbbells at shoulder height, palms forward.", "Press straight up until arms nearly extended.", "Lower slowly back to shoulder height.", "Brace core - don't let lower back arch."],
-    note: "If you're using momentum to get the weight up, go lighter."
+    note: "If you are using momentum to get the weight up, go lighter."
   },
   "Dumbbell row": {
     steps: ["One knee and hand on bench. Other foot flat on floor.", "Dumbbell hanging straight down.", "Pull toward hip - elbow close to body.", "Lower with control. All reps then switch."],
@@ -293,27 +291,29 @@ var howTo = {
 
 var data = {
   1: {
-    phase: "Phase 1: Foundation", sub: "3 days/week · 50 min target",
+    phase: "Phase 1: Foundation",
+    sub: "3 days/week · 50 min · 3x12 · 75s main / 60s accessory / 45s core",
+    restMain: 75, restAcc: 60, restCore: 45, circuitRounds: 4,
     days: [
-      { note: "Quads, chest, anterior shoulders. 90s rest on main lifts, 60s accessories.",
-        warmup: [["5 min cardio","treadmill or bike","Easy - just get warm"],["Goblet squat","2 x 10, light","Warmup pattern only"]],
-        main: [["Barbell back squat","3 x 8","Light. Depth and chest position."],["Flat barbell bench press","3 x 8","Shoulder blades pinched, controlled descent"],["Leg press","3 x 10","Full range, feet shoulder-width"],["Incline dumbbell press","3 x 10","30-45 degree incline"]],
+      { note: "Front chain - quads, chest, anterior shoulders. 75s rest on main lifts, 60s accessories, 45s core. Go light - learn the patterns.",
+        warmup: [["5 min cardio","treadmill or bike","Easy - just get warm"],["Goblet squat","2 x 10, light","Warmup pattern only - not a working set"]],
+        main: [["Barbell back squat","3 x 12","Light. Depth and chest position first."],["Flat barbell bench press","3 x 12","Shoulder blades pinched, controlled descent"],["Leg press","3 x 12","Full range, feet shoulder-width"],["Incline dumbbell press","3 x 12","30-45 degree incline"]],
         accessory: [["Dumbbell lateral raise","3 x 12","Light - 3 sec down"],["Cable tricep pushdown","3 x 12","Elbows glued to sides"]],
         core: [["Plank","3 x 30 sec","Squeeze everything"],["Hanging knee raise","3 x 10","No swinging"]]
       },
-      { note: "Hamstrings, glutes, back, rear shoulders. 90s rest main lifts, 60s accessories.",
+      { note: "Rear chain - hamstrings, glutes, back, rear shoulders. 75s rest on main lifts, 60s accessories, 45s core.",
         warmup: [["5 min cardio","treadmill or bike","Easy"],["Romanian deadlift","2 x 10, empty bar","Groove the hinge before loading"]],
-        main: [["Romanian deadlift","3 x 8","Hip hinge - push hips back, back flat"],["Pull-up / Lat pulldown","3 x 8","Lead with elbows, chest to bar"],["Barbell bent-over row","3 x 8","Torso parallel, pull to lower chest"],["Leg curl (machine)","3 x 10","3 seconds down"]],
-        accessory: [["Barbell hip thrust","3 x 10","Squeeze hard at the top"],["Cable face pull","3 x 15","Elbows high and wide - don't skip"]],
+        main: [["Romanian deadlift","3 x 12","Hip hinge - push hips back, back flat"],["Pull-up / Lat pulldown","3 x 12","Lead with elbows, chest to bar"],["Barbell bent-over row","3 x 12","Torso parallel, pull to lower chest"],["Leg curl (machine)","3 x 12","3 seconds down"]],
+        accessory: [["Barbell hip thrust","3 x 12","Squeeze hard at the top"],["Cable face pull","3 x 12","Elbows high and wide - don't skip"]],
         core: [["Plank","3 x 30 sec",""],["Cable woodchop","3 x 10 each side","Rotate through your torso"]]
       },
-      { note: "Different patterns from Days 1 and 2. No repeated movements. 90s rest main, 60s accessories.",
+      { note: "Full body - different patterns from Days 1 and 2. No repeated movements. 75s rest main, 60s accessories, 45s core.",
         warmup: [["5 min cardio","any machine","Easy"]],
-        main: [["Trap bar deadlift","3 x 8","Push the floor away - more upright than conventional"],["Bulgarian split squat","3 x 8 each side","Rear foot on bench - go light first"],["Overhead barbell press","3 x 8","Brace core hard - don't arch"],["Chest-supported dumbbell row","3 x 10","Chest-down on incline bench, strict pull"]],
-        accessory: [["Dumbbell shoulder press","3 x 10","Seated, controlled"],["Dumbbell row","3 x 10 each side","One knee on bench"]],
+        main: [["Trap bar deadlift","3 x 12","Push the floor away - more upright than conventional"],["Bulgarian split squat","3 x 12 each side","Rear foot on bench - go light first"],["Overhead barbell press","3 x 12","Brace core hard - don't arch"],["Chest-supported dumbbell row","3 x 12","Chest-down on incline bench, strict pull"]],
+        accessory: [["Dumbbell shoulder press","3 x 12","Seated, controlled"],["Dumbbell row","3 x 12 each side","One knee on bench"]],
         core: [["Ab wheel rollout","3 x 8","Short range - back stays flat"],["Plank","2 x 40 sec",""]]
       },
-      { note: "Bonus day. 40 sec work / 20 sec rest. 4 rounds. 90 sec rest between rounds. Tap check when each exercise done.",
+      { note: "Bonus fat burner. 40 sec work / 20 sec rest. 4 rounds. 90 sec rest between rounds. Tap check when each exercise done.",
         warmup: [["5 min cardio","bike or rower","Build to moderate pace"]],
         main: [["Goblet squat","40 sec on / 20 sec rest","Moderate weight, continuous reps"],["Dumbbell thruster","40 sec on / 20 sec rest","Squat into press - one fluid movement"],["Kettlebell swing","40 sec on / 20 sec rest","Hip snap - not a squat"],["Chest-supported dumbbell row","40 sec on / 20 sec rest","Strict even when tired"],["Battle ropes","40 sec on / 20 sec rest","All out"],["Box jump","40 sec on / 20 sec rest","Soft landing - step down between reps"],["Medicine ball slam","40 sec on / 20 sec rest","Whole body into every slam"],["Farmer carry","40 sec walk","Heavy - chest up, core braced"]],
         accessory: [],
@@ -322,56 +322,60 @@ var data = {
     ]
   },
   3: {
-    phase: "Phase 2: Building", sub: "3 days/week · add weight · 50 min target",
+    phase: "Phase 2: Building",
+    sub: "3 days/week · 50 min · 3x12 heavier · 75s main / 60s accessory / 45s core",
+    restMain: 75, restAcc: 60, restCore: 45, circuitRounds: 5,
     days: [
-      { note: "Add weight to everything from Phase 1. 4 sets on main lifts. 90s rest main, 60s accessories.",
+      { note: "Same movements as Phase 1, heavier weight throughout. If 3x12 felt easy last phase, add 10 lbs. 75s rest main, 60s accessories.",
         warmup: [["5 min cardio","",""],["Goblet squat","2 x 10, moderate",""]],
-        main: [["Barbell back squat","4 x 6","Add 10-20 lbs from Phase 1"],["Flat barbell bench press","4 x 6","Add 10 lbs"],["Leg press","3 x 12","Add weight"],["Incline dumbbell press","3 x 10","Add 5 lbs per dumbbell"]],
-        accessory: [["Dumbbell lateral raise","3 x 15","Add a rep, not weight yet"],["Cable tricep pushdown","3 x 15",""]],
-        core: [["Plank","3 x 45 sec",""],["Hanging knee raise","3 x 12",""],["Ab wheel rollout","2 x 10",""]]
+        main: [["Barbell back squat","3 x 12","Add 10-20 lbs from Phase 1. Last 2 reps should be hard."],["Flat barbell bench press","3 x 12","Add 10 lbs"],["Leg press","3 x 12","Add weight"],["Incline dumbbell press","3 x 12","Add 5 lbs per dumbbell"]],
+        accessory: [["Dumbbell lateral raise","3 x 12","Add a small amount of weight"],["Cable tricep pushdown","3 x 12","Add weight"]],
+        core: [["Plank","3 x 40 sec",""],["Hanging knee raise","3 x 12",""],["Ab wheel rollout","2 x 10",""]]
       },
-      { note: "RDL and row weights go up. Hip thrust responds well to load. 90s rest main, 60s accessories.",
-        warmup: [["5 min cardio","",""],["Romanian deadlift","2 x 8, light",""]],
-        main: [["Romanian deadlift","4 x 8","Add 10-20 lbs"],["Pull-up / Lat pulldown","4 x 8","Add weight or reduce band assistance"],["Barbell bent-over row","4 x 8","Add weight"],["Leg curl (machine)","3 x 12",""]],
-        accessory: [["Barbell hip thrust","3 x 12","Add weight - responds well"],["Cable face pull","3 x 15",""]],
-        core: [["Plank","3 x 45 sec",""],["Cable woodchop","3 x 12 each side",""]]
+      { note: "Heavier across the board. Hip thrust responds especially well to load. 75s rest main, 60s accessories.",
+        warmup: [["5 min cardio","",""],["Romanian deadlift","2 x 10, light",""]],
+        main: [["Romanian deadlift","3 x 12","Add 10-20 lbs"],["Pull-up / Lat pulldown","3 x 12","Add weight or reduce band assistance"],["Barbell bent-over row","3 x 12","Add weight"],["Leg curl (machine)","3 x 12","Add weight"]],
+        accessory: [["Barbell hip thrust","3 x 12","Add weight - this one responds fast"],["Cable face pull","3 x 12",""]],
+        core: [["Plank","3 x 40 sec",""],["Cable woodchop","3 x 12 each side",""]]
       },
-      { note: "Trap bar is your strength anchor today. Heavier across the board. 2 min rest on trap bar, 90s everything else.",
+      { note: "Trap bar is your anchor today. Heavier across the board. 75s rest main, 60s accessories.",
         warmup: [["5 min cardio","",""]],
-        main: [["Trap bar deadlift","4 x 6","Add weight - moves fast early on"],["Bulgarian split squat","3 x 10 each side","Add dumbbells if bodyweight is easy"],["Overhead barbell press","4 x 6","Add weight"],["Chest-supported dumbbell row","4 x 10","Add weight"]],
-        accessory: [["Dumbbell shoulder press","3 x 12",""],["Dumbbell row","3 x 12 each side",""]],
-        core: [["Ab wheel rollout","3 x 10",""],["Plank","2 x 50 sec",""],["Cable woodchop","2 x 12 each side",""]]
+        main: [["Trap bar deadlift","3 x 12","Add weight - this one moves fast early on"],["Bulgarian split squat","3 x 12 each side","Add light dumbbells if bodyweight is easy"],["Overhead barbell press","3 x 12","Add weight"],["Chest-supported dumbbell row","3 x 12","Add weight"]],
+        accessory: [["Dumbbell shoulder press","3 x 12","Add weight"],["Dumbbell row","3 x 12 each side",""]],
+        core: [["Ab wheel rollout","3 x 10",""],["Plank","2 x 45 sec",""],["Cable woodchop","2 x 12 each side",""]]
       },
-      { note: "5 rounds. Heavier weights throughout. 40 sec on / 20 sec rest. 90 sec between rounds.",
+      { note: "5 rounds now. Same structure, heavier weights. 40 sec on / 20 sec rest. 90 sec between rounds.",
         warmup: [["5 min cardio","build the pace",""]],
         main: [["Goblet squat","40 sec on / 20 sec rest","Heavier than Phase 1"],["Dumbbell thruster","40 sec on / 20 sec rest",""],["Kettlebell swing","40 sec on / 20 sec rest","Heavier bell"],["Chest-supported dumbbell row","40 sec on / 20 sec rest",""],["Battle ropes","40 sec on / 20 sec rest",""],["Box jump","40 sec on / 20 sec rest","Higher box if ready"],["Medicine ball slam","40 sec on / 20 sec rest","Heavier ball"],["Farmer carry","40 sec walk","Heavier dumbbells"]],
         accessory: [],
-        core: [["Plank","2 x 50 sec",""]]
+        core: [["Plank","2 x 45 sec",""]]
       }
     ]
   },
   5: {
-    phase: "Phase 3: Loading", sub: "3 days/week · find your real working weights",
+    phase: "Phase 3: Loading",
+    sub: "3 days/week · 50 min · 4x10 · 60s main / 45s accessory / 30s core",
+    restMain: 60, restAcc: 45, restCore: 30, circuitRounds: 5,
     days: [
-      { note: "Working sets should be genuinely hard by set 4-5. 2 min rest on main lifts, 60s accessories.",
+      { note: "Up to 4 sets, down to 10 reps. More total volume. Rest drops to 60s on main lifts - this is where fat loss accelerates. Add weight from Phase 2.",
         warmup: [["5 min cardio","",""],["Goblet squat","2 x 8",""]],
-        main: [["Barbell back squat","5 x 5","Challenging by last 2 sets"],["Flat barbell bench press","5 x 5",""],["Leg press","4 x 10","Last 2 reps should be hard"],["Incline dumbbell press","3 x 12",""]],
-        accessory: [["Dumbbell lateral raise","4 x 15",""],["Cable tricep pushdown","4 x 15",""]],
-        core: [["Ab wheel rollout","3 x 12",""],["Hanging knee raise","3 x 15",""],["Plank","2 x 60 sec",""]]
+        main: [["Barbell back squat","4 x 10","Heavier than Phase 2. 60s rest - stick to it."],["Flat barbell bench press","4 x 10","Add weight from Phase 2"],["Leg press","4 x 10","Add weight"],["Incline dumbbell press","4 x 10",""]],
+        accessory: [["Dumbbell lateral raise","3 x 12","45s rest"],["Cable tricep pushdown","3 x 12","45s rest"]],
+        core: [["Plank","3 x 45 sec","30s rest between"],["Hanging knee raise","3 x 12",""],["Ab wheel rollout","3 x 10",""]]
       },
-      { note: "RDL is the anchor - back flat is non-negotiable at any weight. 2 min rest on main lifts.",
-        warmup: [["5 min cardio","",""],["Romanian deadlift","2 x 8, moderate",""]],
-        main: [["Romanian deadlift","5 x 6","Heavy - back flat always"],["Pull-up / Lat pulldown","4 x 8","Add weight"],["Barbell bent-over row","4 x 8",""],["Leg curl (machine)","3 x 12",""]],
-        accessory: [["Barbell hip thrust","4 x 10","Loading up"],["Cable face pull","3 x 20","High reps, light - shoulder health"]],
-        core: [["Cable woodchop","3 x 15 each side",""],["Plank","3 x 60 sec",""]]
+      { note: "4 sets, 10 reps, 60s rest. Tighter rest means more calories burned. Keep weights progressing. Back flat on RDL always.",
+        warmup: [["5 min cardio","",""],["Romanian deadlift","2 x 10, moderate",""]],
+        main: [["Romanian deadlift","4 x 10","Back flat - non-negotiable at any weight"],["Pull-up / Lat pulldown","4 x 10","Add weight"],["Barbell bent-over row","4 x 10","Add weight"],["Leg curl (machine)","4 x 10",""]],
+        accessory: [["Barbell hip thrust","3 x 12","Keep loading this one"],["Cable face pull","3 x 15","45s rest - high reps, shoulder health"]],
+        core: [["Cable woodchop","3 x 12 each side","30s rest"],["Plank","3 x 50 sec",""]]
       },
-      { note: "Trap bar is your heavy anchor. Push the weight. 2 min rest on trap bar and OHP.",
+      { note: "4 sets, 10 reps, 60s rest. Trap bar and OHP are your anchors. Push the weight.",
         warmup: [["5 min cardio","",""]],
-        main: [["Trap bar deadlift","5 x 4","Heaviest trap bar yet"],["Bulgarian split squat","4 x 10 each side","Dumbbells in hand"],["Overhead barbell press","4 x 5","Heavy - core tight"],["Chest-supported dumbbell row","4 x 12",""]],
-        accessory: [["Dumbbell shoulder press","3 x 12",""],["Dumbbell row","4 x 10 each side",""]],
-        core: [["Ab wheel rollout","3 x 12",""],["Cable woodchop","3 x 15 each side",""],["Plank","2 x 60 sec",""]]
+        main: [["Trap bar deadlift","4 x 10","Heavier than Phase 2"],["Bulgarian split squat","4 x 10 each side","Dumbbells in hand now"],["Overhead barbell press","4 x 10","Add weight"],["Chest-supported dumbbell row","4 x 10","Add weight"]],
+        accessory: [["Dumbbell shoulder press","3 x 12","45s rest"],["Dumbbell row","3 x 12 each side",""]],
+        core: [["Ab wheel rollout","3 x 12","30s rest"],["Cable woodchop","3 x 12 each side",""],["Plank","2 x 50 sec",""]]
       },
-      { note: "6 rounds. 40 sec on / 20 sec rest. 90 sec between rounds. This should be hard.",
+      { note: "5 rounds. 40 sec on / 20 sec rest. 90 sec between rounds. Heavier weights throughout.",
         warmup: [["5 min cardio","build to a strong pace",""]],
         main: [["Goblet squat","40 sec on / 20 sec rest","Heavy"],["Dumbbell thruster","40 sec on / 20 sec rest",""],["Kettlebell swing","40 sec on / 20 sec rest",""],["Chest-supported dumbbell row","40 sec on / 20 sec rest",""],["Battle ropes","40 sec on / 20 sec rest",""],["Box jump","40 sec on / 20 sec rest",""],["Medicine ball slam","40 sec on / 20 sec rest",""],["Farmer carry","40 sec walk","Max weight with good posture"]],
         accessory: [],
@@ -380,29 +384,31 @@ var data = {
     ]
   },
   7: {
-    phase: "Phase 4: Performance", sub: "3 days/week · peak strength + conditioning",
+    phase: "Phase 4: Peak",
+    sub: "3 days/week · 50 min · 4x10 heavier · 60s main / 45s accessory / 30s core",
+    restMain: 60, restAcc: 45, restCore: 30, circuitRounds: 6,
     days: [
-      { note: "Heaviest weights of the program. You know the movements - load them. 2 min rest.",
-        warmup: [["5 min cardio","",""],["Goblet squat","2 x 6, moderate",""]],
-        main: [["Barbell back squat","5 x 3","Heaviest squat of the program"],["Flat barbell bench press","5 x 3",""],["Leg press","4 x 12",""],["Incline dumbbell press","4 x 10",""]],
-        accessory: [["Dumbbell lateral raise","4 x 15",""],["Cable tricep pushdown","4 x 15",""]],
-        core: [["Ab wheel rollout","3 x 15",""],["Hanging knee raise","3 x 15",""],["Plank","3 x 60 sec",""]]
+      { note: "Same structure as Phase 3, heavier weight on everything. 60s rest on main - hold that line. This is the hardest phase.",
+        warmup: [["5 min cardio","",""],["Goblet squat","2 x 8, moderate",""]],
+        main: [["Barbell back squat","4 x 10","Heaviest squat of the program. Last 2 reps hard."],["Flat barbell bench press","4 x 10","Heaviest bench of the program"],["Leg press","4 x 10","Add weight from Phase 3"],["Incline dumbbell press","4 x 10","Add weight"]],
+        accessory: [["Dumbbell lateral raise","4 x 12","45s rest"],["Cable tricep pushdown","4 x 12","45s rest"]],
+        core: [["Plank","3 x 60 sec","30s rest - finish strong"],["Hanging knee raise","3 x 15",""],["Ab wheel rollout","3 x 12",""]]
       },
-      { note: "RDL at peak weight. Every set counts. 2 min rest on main lifts.",
-        warmup: [["5 min cardio","",""],["Romanian deadlift","2 x 8, moderate",""]],
-        main: [["Romanian deadlift","5 x 5","Peak load - back flat, no compromises"],["Pull-up / Lat pulldown","4 x 8",""],["Barbell bent-over row","4 x 8",""],["Leg curl (machine)","3 x 15",""]],
-        accessory: [["Barbell hip thrust","4 x 12",""],["Cable face pull","3 x 20",""]],
-        core: [["Cable woodchop","3 x 15 each side",""],["Plank","3 x 60 sec",""]]
+      { note: "Heaviest rear chain day of the program. 60s rest - stick to it even when it feels too short.",
+        warmup: [["5 min cardio","",""],["Romanian deadlift","2 x 10, moderate",""]],
+        main: [["Romanian deadlift","4 x 10","Peak load - back flat, no compromises"],["Pull-up / Lat pulldown","4 x 10","Heaviest yet"],["Barbell bent-over row","4 x 10","Heaviest yet"],["Leg curl (machine)","4 x 10","Add weight"]],
+        accessory: [["Barbell hip thrust","4 x 12","Heaviest hip thrust of the program"],["Cable face pull","3 x 15","Shoulder health - don't skip"]],
+        core: [["Cable woodchop","3 x 15 each side","30s rest"],["Plank","3 x 60 sec",""]]
       },
-      { note: "Hit personal bests on trap bar and overhead press. Compete with your best numbers.",
+      { note: "Heaviest Day 3 of the program. Compete with your best numbers on trap bar and OHP.",
         warmup: [["5 min cardio","",""]],
-        main: [["Trap bar deadlift","5 x 3","Heaviest trap bar of the program"],["Bulgarian split squat","4 x 12 each side",""],["Overhead barbell press","5 x 3","Heavy - no back arch"],["Chest-supported dumbbell row","4 x 12",""]],
-        accessory: [["Dumbbell shoulder press","4 x 10",""],["Dumbbell row","4 x 12 each side",""]],
-        core: [["Ab wheel rollout","3 x 15",""],["Cable woodchop","3 x 15 each side",""],["Plank","3 x 60 sec",""]]
+        main: [["Trap bar deadlift","4 x 10","Heaviest trap bar of the program"],["Bulgarian split squat","4 x 12 each side","Heaviest split squat yet"],["Overhead barbell press","4 x 10","Heaviest OHP of the program"],["Chest-supported dumbbell row","4 x 10","Heaviest yet"]],
+        accessory: [["Dumbbell shoulder press","4 x 12","45s rest"],["Dumbbell row","4 x 12 each side",""]],
+        core: [["Ab wheel rollout","3 x 15","30s rest"],["Cable woodchop","3 x 15 each side",""],["Plank","2 x 60 sec",""]]
       },
-      { note: "6 rounds, max effort. Heaviest circuit weights of the program. Earn it.",
+      { note: "6 rounds - the most of the program. 40 sec on / 20 sec rest. 90 sec between rounds. Heaviest circuit weights yet. Earn it.",
         warmup: [["5 min cardio","build hard",""]],
-        main: [["Goblet squat","40 sec on / 20 sec rest",""],["Dumbbell thruster","40 sec on / 20 sec rest",""],["Kettlebell swing","40 sec on / 20 sec rest",""],["Chest-supported dumbbell row","40 sec on / 20 sec rest",""],["Battle ropes","40 sec on / 20 sec rest","All out"],["Box jump","40 sec on / 20 sec rest",""],["Medicine ball slam","40 sec on / 20 sec rest",""],["Farmer carry","40 sec walk","Heaviest of the program"]],
+        main: [["Goblet squat","40 sec on / 20 sec rest","Heaviest of the program"],["Dumbbell thruster","40 sec on / 20 sec rest",""],["Kettlebell swing","40 sec on / 20 sec rest",""],["Chest-supported dumbbell row","40 sec on / 20 sec rest",""],["Battle ropes","40 sec on / 20 sec rest","All out"],["Box jump","40 sec on / 20 sec rest",""],["Medicine ball slam","40 sec on / 20 sec rest",""],["Farmer carry","40 sec walk","Heaviest of the program"]],
         accessory: [],
         core: [["Ab wheel rollout","2 x 15",""],["Plank","2 x 60 sec",""]]
       }
@@ -410,20 +416,13 @@ var data = {
   }
 };
 
-var dayLabels = [
-  ["Day 1", "Front chain"],
-  ["Day 2", "Rear chain"],
-  ["Day 3", "Full body"],
-  ["Day 4", "Circuit"]
-];
-
 var currentWeek = 1;
 var currentDay = 0;
 var checked = {};
-try { checked = JSON.parse(localStorage.getItem('justin_v2') || '{}'); } catch(e) {}
+try { checked = JSON.parse(localStorage.getItem('justin_v3') || '{}'); } catch(e) {}
 
 function save() {
-  try { localStorage.setItem('justin_v2', JSON.stringify(checked)); } catch(e) {}
+  try { localStorage.setItem('justin_v3', JSON.stringify(checked)); } catch(e) {}
 }
 
 function getKey() { return 'w' + currentWeek + 'd' + currentDay; }
@@ -444,12 +443,18 @@ function setDay(d) {
   renderDay();
 }
 
-function toggle(key, idx, sectionType) {
+function toggle(key, idx, sType) {
   var wasChecked = checked[key + '_' + idx];
   checked[key + '_' + idx] = !wasChecked;
   save();
-  if (!wasChecked && sectionType !== 'warmup') {
-    var secs = currentDay === 3 ? 20 : (restTimes[sectionType] || 90);
+  var week = data[currentWeek];
+  if (!wasChecked && sType !== 'warmup') {
+    var secs;
+    if (sType === 'circuit') { secs = 90; }
+    else if (sType === 'main') { secs = week.restMain; }
+    else if (sType === 'accessory') { secs = week.restAcc; }
+    else if (sType === 'core') { secs = week.restCore; }
+    else { secs = 60; }
     startRest(secs);
   } else {
     skipRest();
@@ -509,6 +514,7 @@ function renderDay() {
 
   var html = '';
   var idx = 0;
+  var isCircuit = currentDay === 3;
 
   if (day.note) {
     html += '<div class="note-box"><strong>Today:</strong> ' + day.note + '</div>';
@@ -516,27 +522,39 @@ function renderDay() {
 
   function section(label, exs, sType) {
     if (!exs || !exs.length) return;
-    var restSec = sType === 'warmup' ? 0 : (currentDay === 3 ? 20 : (restTimes[sType] || 90));
-    var restLabel = sType === 'warmup' ? '' : (' &middot; ' + restSec + 's rest');
+    var restSec;
+    if (sType === 'warmup') { restSec = 0; }
+    else if (isCircuit) { restSec = 90; }
+    else if (sType === 'main') { restSec = week.restMain; }
+    else if (sType === 'accessory') { restSec = week.restAcc; }
+    else if (sType === 'core') { restSec = week.restCore; }
+    else { restSec = 60; }
+
+    var restLabel = (sType !== 'warmup' && restSec > 0) ? (' · ' + restSec + 's rest') : '';
     html += '<div class="section-label">' + label + '<span class="section-rest">' + restLabel + '</span></div>';
-    exs.forEach(function(ex, localIdx) {
+
+    exs.forEach(function(ex) {
       var i = idx++;
       var isDone = checked[key + '_' + i];
       var name = ex[0];
       var detail = ex[1];
       var tip = ex[2];
       var hasHow = !!howTo[name];
-      var safeName = name.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-      var safeDetail = detail.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+      var safeName = name.replace(/'/g, "\\'");
+      var safeDetail = detail.replace(/'/g, "\\'");
+      var actualType = isCircuit && sType !== 'core' ? 'circuit' : sType;
+
       html += '<div class="ex-card' + (isDone ? ' done' : '') + '">';
-      html += '<div class="check" onclick="toggle(\'' + key + '\',' + i + ',\'' + sType + '\')"><span class="check-icon">&#10003;</span></div>';
+      html += '<div class="check" onclick="toggle(\'' + key + '\',' + i + ',\'' + actualType + '\')"><span class="check-icon">&#10003;</span></div>';
       html += '<div class="ex-info">';
       html += '<div class="ex-name">' + name + '</div>';
       html += '<div class="ex-detail">' + detail + '</div>';
       if (tip) html += '<div class="ex-tip">' + tip + '</div>';
       html += '<div class="btn-row">';
       if (hasHow) html += '<button class="how-btn" onclick="openHow(\'' + safeName + '\',\'' + safeDetail + '\')">&#9654; how to</button>';
-      if (sType !== 'warmup') html += '<button class="rest-btn" onclick="startRest(' + restSec + ')">&#9201; ' + restSec + 's rest</button>';
+      if (sType !== 'warmup' && restSec > 0) {
+        html += '<button class="rest-btn" onclick="startRest(' + restSec + ')">&#9201; ' + restSec + 's</button>';
+      }
       html += '</div></div></div>';
     });
   }
