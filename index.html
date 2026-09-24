@@ -157,7 +157,7 @@ const ACC  = {dose:["3 x 12","4 x 10"], log:true};
 const ACC_REST = [45,45];
 
 const DAYS = [
-{ key:"d1", short:"Legs and chest", title:"Legs and chest", intro:"Squat first while you're fresh, then press, then the pump work.",
+{ key:"d1", short:"Legs and chest", title:"Legs and chest", intro:"Squat first while you're fresh, then press, then the pump work. Face pull's in here to balance out a push heavy day.",
   blocks:[
   {title:"Warmup", time:"8 min", soft:true, items:[
     {id:"bike", name:"Bike", dose:"3 min easy", hold:180, demo:"stationary bike warm up",
@@ -187,7 +187,10 @@ const DAYS = [
      feel:"Quads and glutes.", avoid:"Your lower back peeling off the seat at the bottom, or locking your knees at the top."},
     {...ACC, rest:ACC_REST, id:"cablefly", name:"Cable fly", demo:"standing cable fly chest",
      setup:"Cables at chest height, staggered stance, slight bend in the elbows.", move:"Bring your hands together in front like hugging a tree. Control it back.",
-     feel:"Chest squeezing at the middle.", avoid:"Bending your elbows more and turning it into a press."}
+     feel:"Chest squeezing at the middle.", avoid:"Bending your elbows more and turning it into a press."},
+    {id:"facepull1", name:"Face pull", dose:["3 x 15","4 x 12"], rest:ACC_REST, log:true, demo:"face pull cable rope form",
+     setup:"Cable at eye height with a rope.", move:"Pull toward your forehead, spreading the rope ends, elbows high.",
+     feel:"Rear shoulders and upper back.", avoid:"Yanking with your lower back."}
   ]},
   {title:"Core superset", time:"about 5 min", items:[
     {id:"kneeraise", name:"Hanging knee raise", dose:["3 x 10","3 x 12"], demo:"hanging knee raise form",
@@ -252,10 +255,16 @@ const DAYS = [
      setup:"Stand sideways to a cable at chest height, handle at your sternum.", move:"Press straight out, hold 2 sec, bring it back.",
      feel:"Trunk resisting the twist.", avoid:"Rotating toward the cable."}
   ]},
-  {title:"Suitcase carry", time:"about 4 min", items:[
-    {id:"suitcase", name:"Suitcase carry", dose:["3 walks per hand, 40 yd","4 walks per hand, 40 yd"], log:true, demo:"suitcase carry exercise",
-     setup:"1 heavy dumbbell or kettlebell in one hand.", move:"Walk tall and slow, switch hands each walk.",
-     feel:"The side opposite the weight holding you upright.", avoid:"Leaning toward the weight."}
+  {title:"Back extension", time:"about 3 min", note:"For posture, not just the back. Weak lower back extensors are a big driver of slouching by the end of a long day.", items:[
+    {id:"backext", name:"45 degree back extension", dose:["2 x 12","3 x 12"], rest:[45,45], log:true, demo:"45 degree back extension glute focus",
+     setup:"Pad just below your hip crease, feet locked in. Bodyweight, or hold a plate to your chest once bodyweight feels easy.",
+     move:"Hinge down at the hips, then rise until your body is a straight line. Stop there.",
+     feel:"Glutes and lower back holding you up, not straining.", avoid:"Leaning back past straight at the top. That's hyperextension, not the goal."}
+  ]},
+  {title:"Suitcase hold", time:"about 4 min", items:[
+    {id:"suitcase", name:"Suitcase hold", dose:["3 x 30 sec per side","3 x 40 sec per side"], rest:[30,30], log:true, demo:"suitcase hold standing core",
+     setup:"Stand tall, 1 heavy dumbbell or kettlebell hanging at your side.", move:"Just stand there and resist leaning. Switch sides after the time's up.",
+     feel:"The side opposite the weight working hard to keep you upright.", avoid:"Leaning toward the weight or letting your shoulder hike up."}
   ]},
   {title:"Cooldown", time:"4 min", soft:true, items:[
     {id:"latstretch", name:"Kneeling lat stretch", dose:"45 sec", hold:45, demo:"kneeling lat stretch bench",
@@ -275,7 +284,10 @@ const DAYS = [
     {id:"pullapart", name:"Band pull aparts", dose:"15 reps", demo:"band pull apart",
      setup:"Light band at chest height, arms straight.", move:"Pull apart until it touches your chest, control it back.", avoid:"Shrugging."},
     {id:"circles", name:"Arm circles", dose:"15 each direction", demo:"arm circles warm up",
-     setup:"Arms straight out to the sides.", move:"Small circles growing bigger, then reverse."}
+     setup:"Arms straight out to the sides.", move:"Small circles growing bigger, then reverse."},
+    {id:"openbook", name:"Thoracic open book", dose:"6 per side", demo:"thoracic open book stretch",
+     setup:"Lie on your side, knees stacked and bent to hip height, arms straight out, palms together.", move:"Keep knees glued together, lift the top arm up and over to the other side, eyes following your hand.",
+     feel:"Rotation through your upper back.", avoid:"Knees lifting apart. That means your lower back is twisting instead."}
   ]},
   {title:"Overhead press", time:"about 12 min", note:"Ramp sets first: bar x 8, 50% x 5, 70% x 3.", items:[
     {...MAIN, id:"ohp", name:"Standing overhead press", demo:"standing overhead press form",
