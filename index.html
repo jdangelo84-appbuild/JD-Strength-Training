@@ -1,574 +1,720 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Justin's Training Program</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Justin's training program</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f3; color: #2C2C2A; min-height: 100vh; }
-.app { max-width: 480px; margin: 0 auto; padding: 0 0 2rem; }
-.header { background: #2C2C2A; color: white; padding: 1.25rem 1rem 1rem; text-align: center; }
-.header h1 { font-size: 20px; font-weight: 600; }
-.header p { font-size: 12px; opacity: 0.7; margin-top: 3px; }
-.phase-badge { display: inline-block; background: rgba(255,255,255,0.15); color: white; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; margin-bottom: 8px; }
-.tabs-wrap { background: white; border-bottom: 1px solid #e0e0dc; padding: 10px 12px 0; position: sticky; top: 0; z-index: 10; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
-.week-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
-.week-tabs::-webkit-scrollbar { display: none; }
-.week-tab { flex-shrink: 0; padding: 5px 12px; border-radius: 20px; border: 1.5px solid #D3D1C7; background: white; color: #888780; font-size: 12px; font-weight: 500; cursor: pointer; white-space: nowrap; }
-.week-tab.active { background: #2C2C2A; color: white; border-color: #2C2C2A; }
-.day-tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; padding: 10px 12px; background: white; border-bottom: 1px solid #e0e0dc; }
-.day-tab { padding: 7px 2px; border-radius: 8px; border: 1px solid #D3D1C7; background: white; color: #888780; font-size: 11px; font-weight: 500; cursor: pointer; text-align: center; line-height: 1.4; }
-.day-tab.active { background: #f0ede8; color: #2C2C2A; border-color: #2C2C2A; font-weight: 600; }
-.day-tab.bonus { border-style: dashed; }
-.progress-wrap { padding: 10px 14px 0; }
-.progress-text { font-size: 12px; color: #888780; margin-bottom: 5px; }
-.progress-bar { height: 5px; background: #e0e0dc; border-radius: 3px; overflow: hidden; }
-.progress-fill { height: 100%; background: #854F0B; border-radius: 3px; transition: width 0.3s; }
-.rest-bar { background: #2C2C2A; padding: 10px 14px; display: none; align-items: center; gap: 10px; }
-.rest-bar.visible { display: flex; }
-.rest-label { color: white; font-size: 12px; font-weight: 500; white-space: nowrap; }
-.rest-countdown { color: white; font-size: 20px; font-weight: 700; min-width: 36px; text-align: center; }
-.rest-track { flex: 1; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; overflow: hidden; }
-.rest-fill { height: 100%; background: #EF9F27; border-radius: 2px; transition: width 1s linear; }
-.rest-skip { color: rgba(255,255,255,0.6); font-size: 11px; cursor: pointer; white-space: nowrap; }
-.content { padding: 0 12px; }
-.section-label { font-size: 10px; font-weight: 700; color: #888780; text-transform: uppercase; letter-spacing: 0.07em; margin: 14px 0 6px; display: flex; align-items: center; justify-content: space-between; }
-.section-rest { font-size: 10px; color: #854F0B; font-weight: 600; }
-.ex-card { background: white; border: 1px solid #e8e8e4; border-radius: 10px; padding: 11px 12px; margin-bottom: 6px; display: flex; align-items: flex-start; gap: 10px; }
-.ex-card.done { opacity: 0.45; }
-.ex-card.done .check { background: #854F0B; border-color: #854F0B; }
-.ex-card.done .check-icon { opacity: 1; }
-.check { width: 22px; height: 22px; min-width: 22px; border-radius: 50%; border: 2px solid #D3D1C7; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; cursor: pointer; margin-top: 1px; }
-.check-icon { opacity: 0; color: white; font-size: 13px; line-height: 1; }
-.ex-info { flex: 1; min-width: 0; }
-.ex-name { font-size: 14px; font-weight: 600; color: #2C2C2A; }
-.ex-detail { font-size: 12px; color: #888780; margin-top: 1px; }
-.ex-tip { font-size: 11px; color: #854F0B; margin-top: 3px; font-style: italic; }
-.btn-row { display: flex; gap: 6px; margin-top: 5px; flex-wrap: wrap; }
-.how-btn { padding: 3px 9px; border-radius: 20px; border: 1px solid #2C2C2A; background: #f0ede8; color: #2C2C2A; font-size: 11px; font-weight: 500; cursor: pointer; }
-.rest-btn { padding: 3px 9px; border-radius: 20px; border: 1px solid #854F0B; background: #FAEEDA; color: #854F0B; font-size: 11px; font-weight: 500; cursor: pointer; }
-.reset-btn { display: block; width: 100%; margin-top: 14px; padding: 11px; border-radius: 10px; border: 1px solid #D3D1C7; background: white; color: #888780; font-size: 13px; cursor: pointer; text-align: center; }
-.confetti-wrap { text-align: center; padding: 1.5rem 1rem; display: none; }
-.confetti-wrap.show { display: block; }
-.confetti-wrap p { font-size: 15px; font-weight: 600; color: #2C2C2A; }
-.confetti-wrap span { font-size: 36px; display: block; margin-bottom: 8px; }
-.note-box { background: #FAEEDA; border-radius: 8px; padding: 10px 12px; margin: 10px 0 0; font-size: 12px; color: #633806; line-height: 1.5; }
-.note-box strong { font-weight: 600; }
-.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; align-items: flex-end; justify-content: center; }
-.modal-overlay.open { display: flex; }
-.modal { background: white; border-radius: 20px 20px 0 0; padding: 1.25rem 1.25rem 2rem; width: 100%; max-width: 480px; max-height: 80vh; overflow-y: auto; }
-.modal-handle { width: 36px; height: 4px; background: #D3D1C7; border-radius: 2px; margin: 0 auto 1rem; }
-.modal-name { font-size: 17px; font-weight: 700; color: #2C2C2A; margin-bottom: 4px; }
-.modal-detail { font-size: 12px; color: #888780; margin-bottom: 1rem; }
-.modal-steps { list-style: none; padding: 0; }
-.modal-steps li { display: flex; gap: 10px; margin-bottom: 10px; font-size: 14px; line-height: 1.5; color: #2C2C2A; }
-.modal-steps li .num { background: #2C2C2A; color: white; border-radius: 50%; width: 22px; height: 22px; min-width: 22px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; margin-top: 1px; }
-.modal-note { background: #FAEEDA; border-radius: 8px; padding: 10px 12px; margin-top: 12px; font-size: 12px; color: #633806; line-height: 1.5; }
-.modal-note strong { font-weight: 600; }
-.modal-close { display: block; width: 100%; margin-top: 14px; padding: 12px; border-radius: 10px; border: none; background: #2C2C2A; color: white; font-size: 14px; font-weight: 600; cursor: pointer; }
+:root{
+  --bg:#E9ECE8; --panel:#F7F8F5; --ink:#1D2830; --muted:#5B6770; --line:#C9CFCA;
+  --tape:#D93D72; --tape-soft:#F6D3DF; --cyan:#1B8FA8; --cyan-soft:#D2ECF1; --done:#9AA39F;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1A2127; --panel:#232C33; --ink:#E6EAE7; --muted:#9AA6AE; --line:#3A454D;
+    --tape:#F06A98; --tape-soft:#4A2733; --cyan:#4FC0D8; --cyan-soft:#1E3A42; --done:#5E6A70;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1A2127; --panel:#232C33; --ink:#E6EAE7; --muted:#9AA6AE; --line:#3A454D;
+  --tape:#F06A98; --tape-soft:#4A2733; --cyan:#4FC0D8; --cyan-soft:#1E3A42; --done:#5E6A70;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 110px)}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:17px/1.5 "Source Sans 3",-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:640px;margin:0 auto;padding:20px 16px 56px}
+h1,h2,h3{font-family:"Barlow Condensed","Arial Narrow",Impact,sans-serif;margin:0;line-height:1}
+h1{font-size:44px;font-weight:800;letter-spacing:.5px}
+.week{color:var(--muted);margin:8px 0 16px}
+
+.phases{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.phase-btn{border:2px solid var(--line);background:var(--panel);color:var(--ink);border-radius:10px;padding:8px 6px;text-align:left;cursor:pointer;font:inherit}
+.phase-btn b{display:block;font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:22px;font-weight:600;line-height:1.1}
+.phase-btn span{font-size:13px;color:var(--muted)}
+.phase-btn[aria-pressed="true"]{border-color:var(--tape);background:var(--tape-soft)}
+.phase-note{margin:10px 0 0;font-size:15px;color:var(--muted)}
+
+.sticky{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:12px 0 10px;margin-top:18px;border-bottom:1px solid var(--line)}
+.days{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.fuel-card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px;margin-top:10px}
+.targets{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.target{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px}
+.target b{display:block;font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:30px;font-weight:800;line-height:1}
+.target span{font-size:14px;color:var(--muted)}
+.target small{display:block;margin-top:4px;font-size:13px;color:var(--muted)}
+.tracker .total{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:48px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.tracker .total span{font-size:22px;color:var(--muted);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{border:2px solid var(--cyan);background:none;color:var(--ink);border-radius:20px;padding:6px 12px;font:600 14px/1.2 "Source Sans 3",sans-serif;cursor:pointer}
+.chip:active{background:var(--cyan-soft)}
+.chip.minus{border-color:var(--line);color:var(--muted)}
+.meal{display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.meal:last-child{border-bottom:0}
+.meal b{font-weight:600}
+.meal .g{font-weight:600;color:var(--cyan);font-variant-numeric:tabular-nums;text-align:right}
+.meal p{grid-column:1/-1;margin:0;color:var(--muted);font-size:15px}
+.fuel-card ul{margin:6px 0 0;padding-left:20px}
+.fuel-card li{margin:4px 0}
+.day-btn{border:0;border-bottom:4px solid transparent;background:none;color:var(--muted);padding:4px 2px 6px;cursor:pointer;font:inherit;text-align:left}
+.day-btn b{display:block;font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:26px;font-weight:800;line-height:1}
+.day-btn span{font-size:13px;line-height:1.2;display:block}
+.day-btn[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--tape)}
+.bar{display:flex;align-items:center;gap:12px;margin-top:10px}
+.track{flex:1;height:10px;background:var(--line);border-radius:5px;overflow:hidden}
+.fill{height:100%;width:0;background:var(--tape);transition:width .25s}
+.count{font-weight:600;font-variant-numeric:tabular-nums;min-width:62px;text-align:right}
+.reset{background:none;border:1px solid var(--line);color:var(--muted);border-radius:6px;padding:4px 10px;font:inherit;font-size:14px;cursor:pointer}
+
+.day-head{margin-top:22px}
+.day-head h2{font-size:36px;font-weight:800}
+.day-head p{margin:6px 0 0;color:var(--muted)}
+
+section{margin-top:28px}
+.block{display:flex;align-items:baseline;gap:12px;border-left:6px solid var(--tape);padding-left:10px}
+.block.soft{border-left-color:var(--cyan)}
+.block h3{font-size:28px;font-weight:600}
+.block span{color:var(--muted);font-size:15px}
+.block-note{margin:6px 0 0 16px;color:var(--muted);font-size:15px}
+
+.ex{background:var(--panel);border:1px solid var(--line);border-radius:10px;margin-top:10px}
+.ex.is-done{opacity:.6}
+.ex.is-done .name{text-decoration:line-through;text-decoration-color:var(--done)}
+.row{display:flex;align-items:flex-start;gap:12px;padding:12px 14px}
+.check{appearance:none;width:30px;height:30px;flex:none;border:2px solid var(--ink);border-radius:7px;margin:0;display:grid;place-content:center;cursor:pointer}
+.check:checked{background:var(--tape);border-color:var(--tape)}
+.check:checked::after{content:"";width:9px;height:16px;border:solid #fff;border-width:0 3px 3px 0;transform:rotate(45deg) translate(-1px,-2px)}
+details{flex:1;min-width:0}
+summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:10px;align-items:center;min-height:30px}
+summary::-webkit-details-marker{display:none}
+.name{font-weight:600}
+.meta{display:flex;gap:10px;align-items:center;flex:none}
+.dose{color:var(--muted);font-size:15px;text-align:right;max-width:150px}
+.chev{width:10px;height:10px;border:solid var(--muted);border-width:0 2px 2px 0;transform:rotate(45deg);flex:none;transition:transform .2s}
+details[open] .chev{transform:rotate(225deg)}
+.how{padding:10px 0 4px}
+.how dl{margin:0;display:grid;grid-template-columns:70px 1fr;gap:6px 10px}
+.how dt{font-weight:600;color:var(--cyan)}
+.how dd{margin:0}
+.how dt.avoid{color:var(--tape)}
+.log{display:flex;align-items:center;gap:8px;margin-top:12px}
+.log label{font-weight:600;color:var(--cyan);width:70px}
+.log input{width:110px;font:inherit;padding:6px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.btn{display:inline-flex;align-items:center;gap:6px;font:600 15px/1 "Source Sans 3",sans-serif;padding:10px 14px;border-radius:8px;text-decoration:none;border:2px solid var(--ink);color:var(--ink);background:none;cursor:pointer}
+.btn.primary{background:var(--tape);border-color:var(--tape);color:#fff}
+.btn.running{background:var(--tape-soft);color:var(--ink);border-color:var(--tape)}
+
+.circuit{margin-top:10px;background:var(--panel);border:2px solid var(--cyan);border-radius:10px;padding:14px}
+.circuit .now{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:30px;font-weight:800;line-height:1.05}
+.circuit .clock{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:64px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.circuit .sub{color:var(--muted);font-size:15px}
+.circuit.work{background:var(--tape-soft);border-color:var(--tape)}
+.circuit.rest{background:var(--cyan-soft)}
+.circuit .actions{margin-top:10px}
+
+a:focus-visible,button:focus-visible,summary:focus-visible,.check:focus-visible,input:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+@media (max-width:380px){.day-btn span{font-size:12px}.dose{max-width:110px}}
 </style>
 </head>
 <body>
-<div class="app">
-  <div class="header">
-    <div class="phase-badge" id="phase-badge">Phase 1: Foundation</div>
-    <h1>Justin's Training Program</h1>
-    <p id="header-sub">3 days/week · full gym · 50 min target</p>
-  </div>
-  <div class="tabs-wrap">
-    <div class="week-tabs">
-      <button class="week-tab active" onclick="setWeek(1)">Week 1-2</button>
-      <button class="week-tab" onclick="setWeek(3)">Week 3-4</button>
-      <button class="week-tab" onclick="setWeek(5)">Week 5-6</button>
-      <button class="week-tab" onclick="setWeek(7)">Week 7-8</button>
+<main>
+  <h1>Training program</h1>
+  <p class="week">4 days, 50 minutes each. Suggested week: Mon, Wed, Thu, Sat.</p>
+
+  <div class="phases" id="phases" role="group" aria-label="Program phase"></div>
+  <p class="phase-note" id="phaseNote"></p>
+
+  <div class="sticky">
+    <div class="days" id="days" role="tablist" aria-label="Training day"></div>
+    <div class="bar">
+      <div class="track" aria-hidden="true"><div class="fill" id="fill"></div></div>
+      <span class="count" id="count">0 of 0</span>
+      <button class="reset" id="reset" type="button">Reset day</button>
     </div>
   </div>
-  <div class="day-tabs">
-    <button class="day-tab active" onclick="setDay(0)">Day 1<br><span style="font-size:10px;opacity:0.7">Front</span></button>
-    <button class="day-tab" onclick="setDay(1)">Day 2<br><span style="font-size:10px;opacity:0.7">Rear</span></button>
-    <button class="day-tab" onclick="setDay(2)">Day 3<br><span style="font-size:10px;opacity:0.7">Full</span></button>
-    <button class="day-tab bonus" onclick="setDay(3)">Day 4<br><span style="font-size:10px;opacity:0.7">Circuit</span></button>
-  </div>
-  <div class="progress-wrap">
-    <div class="progress-text" id="progress-text">0 of 0 done</div>
-    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
-  </div>
-  <div class="rest-bar" id="rest-bar">
-    <span class="rest-label">Rest</span>
-    <span class="rest-countdown" id="rest-countdown">75</span>
-    <div class="rest-track"><div class="rest-fill" id="rest-fill" style="width:100%"></div></div>
-    <span class="rest-skip" onclick="skipRest()">skip x</span>
-  </div>
-  <div class="content">
-    <div id="exercise-list"></div>
-    <div class="confetti-wrap" id="confetti">
-      <span>&#128170;</span>
-      <p>Session done. Go eat something with protein.</p>
-    </div>
-    <button class="reset-btn" onclick="resetDay()">Reset day</button>
-  </div>
-</div>
-<div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-name" id="modal-name"></div>
-    <div class="modal-detail" id="modal-detail"></div>
-    <ul class="modal-steps" id="modal-steps"></ul>
-    <div class="modal-note" id="modal-note"></div>
-    <button class="modal-close" onclick="closeModal()">Got it</button>
-  </div>
-</div>
+
+  <div id="day"></div>
+</main>
+
 <script>
+const q = s => "https://www.youtube.com/results?search_query=" + encodeURIComponent(s);
 
-var restInterval = null;
-var restRemaining = 0;
-var restTotal = 0;
+const PHASE_INFO = [
+ {name:"Rebuild", weeks:"Weeks 1 to 2", note:"Week 1 at 80 to 90% of your old weights, week 2 back to normal. End every set with about 2 reps left."},
+ {name:"Build", weeks:"Weeks 3 to 5", note:"Extra set on main lifts, shorter rest on accessories, 4 circuit rounds. Add weight once every set hits its reps with 2 left."},
+ {name:"Push", weeks:"Weeks 6 to 8", note:"Heavier main lifts at 6 reps, more accessory volume, 5 circuit rounds. Week 9 is a deload: same weights, half the sets."}
+];
 
-function startRest(seconds) {
-  if (restInterval) clearInterval(restInterval);
-  restRemaining = seconds;
-  restTotal = seconds;
-  document.getElementById('rest-bar').classList.add('visible');
-  updateRestDisplay();
-  restInterval = setInterval(function() {
-    restRemaining--;
-    updateRestDisplay();
-    if (restRemaining <= 0) finishRest();
+// Prescriptions by phase
+const MAIN = {dose:["3 x 8","4 x 8","4 x 6"], rest:[120,120,150], log:true};
+const ACC  = {dose:["3 x 12","3 x 12","4 x 10"], log:true};
+const ACC_REST = [60,45,45];
+
+const DAYS = [
+{ key:"d1", short:"Legs and chest", title:"Legs and chest", intro:"Squat first while you're fresh, then press, then the pump work.",
+  blocks:[
+  {title:"Warmup", time:"8 min", soft:true, items:[
+    {id:"bike", name:"Bike", dose:"3 min easy", hold:180, demo:"stationary bike warm up",
+     setup:"Low resistance.", move:"Easy pace where you could hold a conversation.", feel:"Light sweat, legs loosening."},
+    {id:"bwsquat", name:"Bodyweight squat", dose:"10 reps", demo:"bodyweight squat form",
+     setup:"Feet shoulder width, toes slightly out.", move:"Sit down between your heels, chest up, then stand.", feel:"Hips and knees warming up.", avoid:"Heels lifting off the floor."},
+    {id:"9090", name:"90/90 hip switches", dose:"6 per side", demo:"90 90 hip switch",
+     setup:"Sit on the floor, knees bent, feet wider than your hips, hands behind you.", move:"Drop both knees to one side, then rotate them to the other side. That's 1 rep.", feel:"Stretch in the outside of one hip and inside of the other."},
+    {id:"pushup", name:"Easy push ups", dose:"8 reps", demo:"push up proper form",
+     setup:"Hands under shoulders, body in a straight line.", move:"Lower your chest to about fist height, press back up. Smooth, not hard.", feel:"Chest and shoulders warming."}
+  ]},
+  {title:"Back squat", time:"about 12 min", note:"Ramp sets first: bar x 8, 50% x 5, 70% x 3.", items:[
+    {...MAIN, id:"squat", name:"Back squat", demo:"back squat form",
+     setup:"Bar on your upper traps, feet shoulder width, toes slightly out. Big breath and brace.",
+     move:"Sit down and back until thighs reach at least parallel. Drive up through the middle of your foot.",
+     feel:"Quads and glutes.", avoid:"Knees caving in or your chest dropping forward out of the hole."}
+  ]},
+  {title:"Dumbbell bench press", time:"about 10 min", items:[
+    {...MAIN, rest:[90,90,120], id:"dbbench", name:"Dumbbell bench press", demo:"dumbbell bench press form",
+     setup:"Flat bench, dumbbells at chest level, shoulder blades pinched back, feet planted.",
+     move:"Press up and slightly in. Lower for 2 seconds back to chest level.",
+     feel:"Chest and triceps.", avoid:"Elbows flared straight out to the sides. Keep them at about 45 degrees."}
+  ]},
+  {title:"Superset", time:"about 9 min", items:[
+    {...ACC, id:"legpress", name:"Leg press", demo:"leg press proper form",
+     setup:"Feet shoulder width in the middle of the platform.", move:"Lower until knees reach about 90 degrees, press through your heels.",
+     feel:"Quads and glutes.", avoid:"Your lower back peeling off the seat at the bottom, or locking your knees at the top."},
+    {...ACC, rest:ACC_REST, id:"cablefly", name:"Cable fly", demo:"standing cable fly chest",
+     setup:"Cables at chest height, staggered stance, slight bend in the elbows.", move:"Bring your hands together in front like hugging a tree. Control it back.",
+     feel:"Chest squeezing at the middle.", avoid:"Bending your elbows more and turning it into a press."}
+  ]},
+  {title:"Core superset", time:"about 5 min", items:[
+    {id:"kneeraise", name:"Hanging knee raise", dose:["2 x 10","3 x 10","3 x 12"], demo:"hanging knee raise form",
+     setup:"Hang from a pull up bar, shoulders pulled down.", move:"Curl your knees toward your chest, rolling your pelvis up. Lower slowly.",
+     feel:"Lower abs.", avoid:"Swinging. If you swing, pause at the bottom of each rep."},
+    {id:"deadbug", name:"Dead bug", dose:["2 x 8 per side","3 x 8 per side","3 x 10 per side"], rest:[45,30,30], demo:"dead bug exercise",
+     setup:"On your back, arms up, knees bent over your hips.", move:"Lower opposite arm and leg slowly toward the floor, return, switch.",
+     feel:"Deep abs.", avoid:"Your lower back lifting off the floor."}
+  ]},
+  {title:"Finisher", time:"4 to 5 min", note:"Floor rule: tired days still get 2 rounds. Never zero.",
+   intervals:{work:[20,20,20], rest:[40,40,40], rounds:[4,5,5], hard:"Hard", easy:"Easy spin"}, items:[
+    {id:"bikeint", name:"Bike intervals", demo:"stationary bike sprint intervals",
+     setup:"Moderate resistance.", move:"20 seconds as hard as you can hold, 40 seconds easy spin.", feel:"Breathing hard by round 3."}
+  ]},
+  {title:"Cooldown", time:"5 min", soft:true, items:[
+    {id:"hipflex", name:"Half kneeling hip flexor stretch", dose:"30 sec per side", hold:30, demo:"half kneeling hip flexor stretch",
+     setup:"One knee down, other foot forward.", move:"Squeeze the glute on the kneeling side, tuck your tailbone, shift forward slightly.", feel:"Front of the kneeling hip.", avoid:"Arching your lower back."},
+    {id:"fig4", name:"Figure four glute stretch", dose:"30 sec per side", hold:30, demo:"figure four stretch lying",
+     setup:"On your back, one ankle crossed over the opposite knee.", move:"Pull the bottom leg toward your chest.", feel:"Deep in the glute of the crossed leg."},
+    {id:"doorway", name:"Doorway chest stretch", dose:"30 sec per side", hold:30, demo:"doorway chest stretch",
+     setup:"Forearm on a door frame at shoulder height.", move:"Step through until the front of your chest opens.", feel:"Chest and front of shoulder."},
+    {id:"child", name:"Child's pose breathing", dose:"60 sec", hold:60, demo:"child's pose",
+     setup:"Kneel, sit back on your heels, arms forward on the floor.", move:"Breathe 4 seconds in, 6 seconds out.", feel:"Heart rate dropping."}
+  ]}
+]},
+
+{ key:"d2", short:"Posterior chain", title:"Posterior chain", intro:"Hinge, pull, carry. Every deadlift rep starts from a dead stop.",
+  blocks:[
+  {title:"Warmup", time:"8 min", soft:true, items:[
+    {id:"row", name:"Rower", dose:"3 min easy", hold:180, demo:"rowing machine technique beginner",
+     setup:"Damper around 3 to 4.", move:"Easy pace where you could hold a conversation.", feel:"Light sweat."},
+    {id:"catcow", name:"Cat cow", dose:"8 slow reps", demo:"cat cow exercise",
+     setup:"On all fours, hands under shoulders, knees under hips.", move:"Breathe out and round your back up, breathe in and let your belly sink.", avoid:"Forcing the end range."},
+    {id:"birddog", name:"Bird dog", dose:"6 per side, 3 sec pause", hold:3, demo:"bird dog exercise McGill",
+     setup:"All fours, back flat. Picture a glass of water on your lower back.", move:"Reach opposite arm and leg out until level with your body, hold 3 sec, switch.", avoid:"Hips rotating or back arching."},
+    {id:"bridge", name:"Glute bridge", dose:"12 reps, 2 sec squeeze", demo:"glute bridge proper form",
+     setup:"On your back, knees bent, feet flat near your butt.", move:"Drive through heels, lift hips to a straight line, squeeze 2 sec.", feel:"Glutes.", avoid:"Overarching at the top."},
+    {id:"straightarm", name:"Band straight arm pulldown", dose:"15 reps", demo:"straight arm pulldown band",
+     setup:"Band anchored high, arms straight, slight lean forward.", move:"Pull down in an arc to your thighs with elbows nearly locked.", feel:"Lats.", avoid:"Bending your elbows."},
+    {id:"dowel", name:"Dowel hip hinge", dose:"10 reps", demo:"dowel hip hinge drill",
+     setup:"Pipe along your spine touching the back of your head, upper back and tailbone. Soft knees.", move:"Push your hips back until hamstrings stretch, squeeze glutes to stand.", avoid:"Losing contact at any of the 3 points."}
+  ]},
+  {title:"Trap bar deadlift", time:"about 12 min", note:"Ramp sets first: bar x 8, 40% x 5, 60% x 3.", items:[
+    {...MAIN, id:"trapdl", name:"Trap bar deadlift", demo:"trap bar deadlift form",
+     setup:"Stand in the middle of the bar, grab the handles, big breath and brace.",
+     move:"Push the floor away and stand tall. Lower for 2 seconds, set it down fully, rebrace, next rep.",
+     feel:"Glutes and hamstrings.", avoid:"Touch and go reps. If the last rep grinds, the weight's too heavy."}
+  ]},
+  {title:"Superset", time:"about 9 min", items:[
+    {...ACC, id:"latpull", name:"Lat pulldown", demo:"lat pulldown proper form",
+     setup:"Thighs locked under the pad, hands just outside shoulder width.", move:"Pull to your upper chest, elbows toward your back pockets.",
+     feel:"Lats.", avoid:"Leaning way back to swing it down."},
+    {...ACC, rest:ACC_REST, id:"csrow", name:"Chest supported row", demo:"chest supported dumbbell row incline bench",
+     setup:"Chest on an incline bench pad, dumbbells hanging straight down.", move:"Row toward your hips, squeeze shoulder blades, lower slowly.",
+     feel:"Upper and mid back.", avoid:"Lifting your chest off the pad."}
+  ]},
+  {title:"Superset", time:"about 7 min", items:[
+    {...ACC, id:"hamcurl", name:"Seated hamstring curl", demo:"seated leg curl machine form",
+     setup:"Back against the pad, lap pad snug, roller above your heels.", move:"Curl down and under, pause, return slowly.",
+     feel:"Hamstrings.", avoid:"Letting the weight slam back."},
+    {id:"pallof", name:"Pallof press", dose:["3 x 10 per side","3 x 10 per side","3 x 12 per side"], rest:ACC_REST, log:true, demo:"pallof press cable",
+     setup:"Stand sideways to a cable at chest height, handle at your sternum.", move:"Press straight out, hold 2 sec, bring it back.",
+     feel:"Trunk resisting the twist.", avoid:"Rotating toward the cable."}
+  ]},
+  {title:"Suitcase carry", time:"about 4 min", items:[
+    {id:"suitcase", name:"Suitcase carry", dose:["3 walks per hand, 30 yd","3 walks per hand, 40 yd","4 walks per hand, 40 yd"], log:true, demo:"suitcase carry exercise",
+     setup:"1 heavy dumbbell or kettlebell in one hand.", move:"Walk tall and slow, switch hands each walk.",
+     feel:"The side opposite the weight holding you upright.", avoid:"Leaning toward the weight."}
+  ]},
+  {title:"Cooldown", time:"4 min", soft:true, items:[
+    {id:"latstretch", name:"Kneeling lat stretch", dose:"45 sec", hold:45, demo:"kneeling lat stretch bench",
+     setup:"Kneel facing a bench, elbows on it.", move:"Sit your hips back toward your heels, let your chest sink.", feel:"Lats and upper back."},
+    {id:"hamstretch", name:"Lying hamstring stretch", dose:"30 sec per side", hold:30, demo:"lying hamstring stretch strap",
+     setup:"On your back, one leg straight up, hands or a band behind the thigh.", move:"Gently pull the straight leg toward you.", feel:"Back of the thigh."},
+    {id:"fig4b", name:"Figure four glute stretch", dose:"30 sec per side", hold:30, demo:"figure four stretch lying",
+     setup:"On your back, ankle crossed over the opposite knee.", move:"Pull the bottom leg toward your chest.", feel:"Deep in the glute."}
+  ]}
+]},
+
+{ key:"d3", short:"Shoulders and arms", title:"Shoulders and arms", intro:"Press, pull, arms, then a conditioning finisher.",
+  blocks:[
+  {title:"Warmup", time:"5 min", soft:true, items:[
+    {id:"row3", name:"Rower", dose:"3 min easy", hold:180, demo:"rowing machine technique beginner",
+     setup:"Damper around 3 to 4.", move:"Easy, conversational pace.", feel:"Shoulders loosening."},
+    {id:"pullapart", name:"Band pull aparts", dose:"15 reps", demo:"band pull apart",
+     setup:"Light band at chest height, arms straight.", move:"Pull apart until it touches your chest, control it back.", avoid:"Shrugging."},
+    {id:"circles", name:"Arm circles", dose:"15 each direction", demo:"arm circles warm up",
+     setup:"Arms straight out to the sides.", move:"Small circles growing bigger, then reverse."}
+  ]},
+  {title:"Overhead press", time:"about 12 min", note:"Ramp sets first: bar x 8, 50% x 5, 70% x 3.", items:[
+    {...MAIN, id:"ohp", name:"Standing overhead press", demo:"standing overhead press form",
+     setup:"Barbell or dumbbells at shoulder height, feet hip width, glutes squeezed.",
+     move:"Press straight up, head back slightly to clear your chin, then push your head through. Lower under control.",
+     feel:"Shoulders and triceps.", avoid:"Leaning back to finish the rep."}
+  ]},
+  {title:"Superset", time:"about 9 min", items:[
+    {id:"facepull", name:"Face pull", dose:["3 x 15","3 x 15","4 x 12"], log:true, demo:"face pull cable rope form",
+     setup:"Cable at eye height with a rope.", move:"Pull toward your forehead, spreading the rope ends, elbows high.",
+     feel:"Rear shoulders and upper back.", avoid:"Yanking with your lower back."},
+    {id:"dips", name:"Dips", dose:["3 x 8 to 10","3 x 10","4 x 10"], rest:ACC_REST, log:true, demo:"assisted dip machine form",
+     setup:"Parallel bars or the assisted dip machine.", move:"Lower until upper arms are about parallel to the floor, press up.",
+     feel:"Chest, triceps, front of shoulders.", avoid:"Sinking so deep your shoulders roll forward."}
+  ]},
+  {title:"Superset", time:"about 8 min", items:[
+    {...ACC, id:"inclinecurl", name:"Incline dumbbell curl", demo:"incline dumbbell curl",
+     setup:"Bench at about 45 degrees, arms hanging straight down.", move:"Curl up without letting elbows drift forward, lower slowly.",
+     feel:"Biceps.", avoid:"Swinging."},
+    {...ACC, rest:ACC_REST, id:"pushdown", name:"Rope triceps pushdown", demo:"rope tricep pushdown form",
+     setup:"Cable high with a rope, elbows pinned at your sides.", move:"Push down, spread the rope at the bottom, return with control.",
+     feel:"Triceps.", avoid:"Elbows flaring or leaning into it."}
+  ]},
+  {title:"Farmer carry", time:"about 4 min", items:[
+    {id:"farmer", name:"Farmer carry", dose:["3 walks, 40 yd","3 walks, 40 yd","4 walks, 40 yd"], rest:[60,45,45], log:true, demo:"farmer carry proper form",
+     setup:"Heavy dumbbell or kettlebell in each hand, shoulders pulled back and down.", move:"Walk tall with short, quick steps.",
+     feel:"Grip, traps, whole trunk.", avoid:"Shoulders rounding forward or the weights swinging."}
+  ]},
+  {title:"Finisher", time:"4 to 6 min", note:"Floor rule: tired days still get 2 rounds. Never zero.",
+   intervals:{work:[30,30,30], rest:[30,30,30], rounds:[4,5,6], hard:"Hard", easy:"Easy paddle"}, items:[
+    {id:"rowint", name:"Rower intervals", demo:"rowing machine intervals",
+     setup:"Damper around 4 to 5. Swap to the bike if legs are cooked.", move:"Hard for 30 sec, easy paddle for 30. The timer calls the switches.",
+     avoid:"Pulling with your arms first. Legs, then hips, then arms."}
+  ]},
+  {title:"Cooldown", time:"5 min", soft:true, items:[
+    {id:"walk3", name:"Easy walk", dose:"2 min", hold:120, demo:"cool down walk", setup:"Treadmill or around the gym.", move:"Walk until breathing settles."},
+    {id:"doorway3", name:"Doorway chest stretch", dose:"30 sec per side", hold:30, demo:"doorway chest stretch",
+     setup:"Forearm on a door frame at shoulder height.", move:"Step through until the chest opens.", feel:"Chest and front of shoulder."},
+    {id:"tristretch", name:"Overhead triceps stretch", dose:"30 sec per side", hold:30, demo:"overhead triceps stretch",
+     setup:"Hand behind your head.", move:"Other hand gently pulls the elbow.", feel:"Back of the upper arm."},
+    {id:"crossbody", name:"Cross body shoulder stretch", dose:"30 sec per side", hold:30, demo:"cross body shoulder stretch",
+     setup:"One arm straight across your chest.", move:"Pull it in just above the elbow.", feel:"Back of the shoulder."}
+  ]}
+]},
+
+{ key:"d4", short:"Full body circuit", title:"Full body circuit", intro:"Your fat loss day. Moderate weights, steady pace, short rest. Use the circuit timer and just follow it.",
+  blocks:[
+  {title:"Warmup", time:"6 min", soft:true, items:[
+    {id:"bike4", name:"Bike", dose:"3 min easy", hold:180, demo:"stationary bike warm up",
+     setup:"Low resistance.", move:"Easy, conversational pace."},
+    {id:"wgs", name:"World's greatest stretch", dose:"4 per side", demo:"worlds greatest stretch",
+     setup:"Step into a long lunge, back knee down or hovering.", move:"Drop the inside elbow toward your front foot, then rotate that arm up to the ceiling. Step back and switch.",
+     feel:"Hips, hamstrings and upper back all at once."},
+    {id:"jacks", name:"Jumping jacks", dose:"30 sec", hold:30, demo:"jumping jacks", setup:"Feet together.", move:"Light and quick on the balls of your feet."}
+  ]},
+  {title:"Circuit", time:"18 to 30 min", note:"40 sec work, 20 sec to switch, 1 min rest between rounds. Weights you could do for about 15 reps.",
+   circuit:{work:40, rest:20, roundRest:60, rounds:[3,4,5]}, items:[
+    {id:"swing", name:"Kettlebell swing", log:true, demo:"kettlebell swing proper form",
+     setup:"Kettlebell a foot in front of you, feet a bit wider than hips.", move:"Hike it back between your legs, then snap your hips forward so it floats to chest height.",
+     feel:"Glutes and hamstrings doing the work.", avoid:"Squatting it or lifting it with your arms."},
+    {id:"revlunge", name:"Goblet reverse lunge", log:true, demo:"goblet reverse lunge",
+     setup:"Dumbbell held vertically at your chest.", move:"Step back, lower your back knee toward the floor, drive through the front heel. Alternate legs.",
+     feel:"Glutes and quads of the front leg.", avoid:"Front knee caving in."},
+    {id:"pushup4", name:"Push up", demo:"push up proper form",
+     setup:"Hands under shoulders, body in a straight line. Hands on a bench if form breaks.", move:"Lower chest to fist height, press up.",
+     feel:"Chest and triceps.", avoid:"Hips sagging."},
+    {id:"sarow", name:"Single arm dumbbell row", log:true, demo:"single arm dumbbell row bench",
+     setup:"One hand and knee on a bench, back flat. Switch arms at the halfway beep.", move:"Row the dumbbell to your hip, lower slowly.",
+     feel:"Lats and mid back.", avoid:"Twisting your torso to lift it."},
+    {id:"climbers", name:"Mountain climbers", demo:"mountain climbers exercise",
+     setup:"High plank, hands under shoulders.", move:"Drive knees toward your chest one at a time, quick and controlled.",
+     feel:"Abs and a spiking heart rate.", avoid:"Hips bouncing up high."}
+  ]},
+  {title:"Side plank", time:"about 4 min", items:[
+    {id:"sideplank", name:"Side plank", dose:["2 x 20 sec per side","3 x 25 sec per side","3 x 30 sec per side"], hold:[20,25,30], demo:"side plank form",
+     setup:"On your elbow, elbow under shoulder, legs straight.", move:"Lift hips into a straight line and hold.",
+     feel:"Side of your trunk.", avoid:"Hips sagging."}
+  ]},
+  {title:"Bike sprints", time:"6 to 8 min", note:"Floor rule: tired days still get 2 rounds. Never zero.",
+   intervals:{work:[15,15,20], rest:[45,45,40], rounds:[6,8,8], hard:"Sprint", easy:"Easy spin"}, items:[
+    {id:"sprints", name:"Bike sprints", demo:"assault bike sprint intervals",
+     setup:"Air bike if your gym has one, otherwise a regular bike with moderate resistance.", move:"All out for the sprint, easy spin for the rest.", feel:"Wiped by the last round."}
+  ]},
+  {title:"Cooldown", time:"5 min", soft:true, items:[
+    {id:"walk4", name:"Easy walk", dose:"2 min", hold:120, demo:"cool down walk", setup:"Treadmill or around the gym.", move:"Walk until breathing settles."},
+    {id:"hipflex4", name:"Half kneeling hip flexor stretch", dose:"30 sec per side", hold:30, demo:"half kneeling hip flexor stretch",
+     setup:"One knee down, other foot forward.", move:"Squeeze the glute, tuck your tailbone, shift forward.", feel:"Front of the kneeling hip."},
+    {id:"child4", name:"Child's pose breathing", dose:"60 sec", hold:60, demo:"child's pose",
+     setup:"Sit back on your heels, arms forward.", move:"Breathe 4 seconds in, 6 seconds out.", feel:"Heart rate dropping."}
+  ]}
+]}
+];
+
+// ---------- fuel ----------
+const PROTEIN_TARGET = 190;
+const SNACKS = [
+  {name:"Greek yogurt, plain, 1 cup", g:23, tip:"Add berries or honey. Good before training or before bed"},
+  {name:"Hummus plate with 2 hard boiled eggs", g:16, tip:"Hummus alone is only about 2 g protein per 2 tbsp, so always pair it"},
+  {name:"Protein shake, 1 scoop", g:25, tip:"Easiest post workout option"},
+  {name:"Tuna pouch", g:17, tip:"Keep a few in your bag"},
+  {name:"Deli turkey roll ups, 4 oz", g:20, tip:"Spread a little hummus inside and roll around a cucumber spear"},
+  {name:"Edamame, 1 cup shelled", g:18, tip:"Frozen, microwave 3 min"},
+  {name:"Protein bar", g:20, tip:"Check the label for 20 g protein, under 250 calories"},
+  {name:"Beef or turkey jerky, 1 oz", g:12, tip:"Watch the sodium"},
+  {name:"2 hard boiled eggs", g:12, tip:"Batch cook a dozen on Sunday. Make it 3 for 18 g"},
+  {name:"String cheese", g:7, tip:"Pair with an apple"}
+];
+const MEALS = [
+  {when:"Breakfast", g:38, what:"2 eggs plus 1 cup egg whites scrambled, 1 slice whole grain toast, fruit"},
+  {when:"Lunch", g:50, what:"6 oz chicken breast, 1 cup rice, big pile of vegetables"},
+  {when:"1 to 2 hours before training", g:28, what:"Turkey sandwich on whole grain bread with hummus instead of mayo, plus a banana"},
+  {when:"After training", g:25, what:"Protein shake plus a piece of fruit"},
+  {when:"Dinner", g:38, what:"6 oz salmon or lean steak, a potato or sweet potato, vegetables"},
+  {when:"Evening", g:23, what:"1 cup Greek yogurt with berries"}
+];
+const today = () => { const d = new Date(); return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate(); };
+
+function renderFuel(){
+  const root = document.getElementById("day");
+  const key = "protein:" + today();
+  root.innerHTML = `
+  <div class="day-head"><h2>Fuel</h2><p>Built for 220 lb with fat loss first. Protein every meal, most of your carbs around training.</p></div>
+
+  <section>
+    <div class="block"><h3>Daily targets</h3></div>
+    <div class="targets">
+      <div class="target"><b>180 to 200 g</b><span>Protein</span><small>0.8 to 0.9 g per lb</small></div>
+      <div class="target"><b>2,600 to 2,800</b><span>Calories, starting point</span><small>Adjust by the scale</small></div>
+      <div class="target"><b>About 100 oz</b><span>Water</span><small>More on sweaty days</small></div>
+      <div class="target"><b>5 g</b><span>Creatine</span><small>Daily, any time</small></div>
+    </div>
+    <p class="block-note">Weigh in on the same morning each week. Aim for about 1 lb a week. If the scale hasn't moved in 2 weeks, cut about 200 calories.</p>
+  </section>
+
+  <section>
+    <div class="block soft"><h3>Protein today</h3></div>
+    <div class="fuel-card tracker">
+      <div class="total" id="ptotal">0 <span>/ ${PROTEIN_TARGET} g</span></div>
+      <div class="track" style="margin-top:10px" aria-hidden="true"><div class="fill" id="pfill"></div></div>
+      <div class="chips" id="pchips"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="block"><h3>Sample training day</h3><span>about 200 g protein</span></div>
+    <div class="fuel-card">${MEALS.map(m => `<div class="meal"><b>${m.when}</b><span class="g">${m.g} g</span><p>${m.what}</p></div>`).join("")}</div>
+    <p class="block-note">Rest days: keep the protein, halve the rice and potatoes, add more vegetables.</p>
+  </section>
+
+  <section>
+    <div class="block"><h3>High protein snacks</h3></div>
+    <div class="fuel-card">${SNACKS.map(n => `<div class="meal"><b>${n.name}</b><span class="g">${n.g} g</span><p>${n.tip}</p></div>`).join("")}</div>
+  </section>
+
+  <section>
+    <div class="block soft"><h3>Grocery staples</h3></div>
+    <div class="fuel-card"><ul>
+      <li><b>Protein:</b> chicken breast, 93% lean ground turkey, salmon, eggs and egg whites, Greek yogurt, deli turkey, tuna pouches, protein powder, hummus (for pairing, not protein)</li>
+      <li><b>Carbs:</b> oats, rice, potatoes and sweet potatoes, whole grain bread, bananas, berries</li>
+      <li><b>Vegetables:</b> bagged salad, frozen broccoli and green beans, peppers, spinach</li>
+      <li><b>Fats, in small amounts:</b> avocado, olive oil, nuts (a small handful is already about 170 calories)</li>
+    </ul></div>
+  </section>
+
+  <section>
+    <div class="block"><h3>Rules that matter most</h3></div>
+    <div class="fuel-card"><ul>
+      <li>Eat a carb and protein meal 1 to 3 hours before lifting so the session has fuel</li>
+      <li>Get protein in within a couple hours after. No need to sprint to a shake</li>
+      <li>Keep alcohol off training days. 3 drinks is about 450 calories plus worse sleep</li>
+      <li>Liquid calories (juice, lattes, soda) are the easiest ones to cut</li>
+    </ul></div>
+  </section>`;
+
+  let total = store.get(key, 0);
+  const paint = () => {
+    document.getElementById("ptotal").innerHTML = `${total} <span>/ ${PROTEIN_TARGET} g</span>`;
+    document.getElementById("pfill").style.width = Math.min(100, total / PROTEIN_TARGET * 100) + "%";
+  };
+  const chips = document.getElementById("pchips");
+  const add = (label, g, cls) => {
+    const c = document.createElement("button");
+    c.type = "button"; c.className = "chip" + (cls ? " " + cls : ""); c.textContent = label;
+    c.addEventListener("click", () => { total = Math.max(0, total + g); store.set(key, total); paint(); });
+    chips.appendChild(c);
+  };
+  [["Meal +40 g",40],["Shake +25 g",25],["Yogurt +23 g",23],["Turkey +20 g",20],["Eggs +12 g",12],["Jerky +12 g",12],["+10 g",10]].forEach(([l,g]) => add(l,g));
+  add("Undo 10 g", -10, "minus");
+  paint();
+}
+
+// ---------- storage ----------
+const store = {
+  get(k, d){ try { const v = localStorage.getItem("tp:"+k); return v === null ? d : JSON.parse(v); } catch(e){ return d; } },
+  set(k, v){ try { localStorage.setItem("tp:"+k, JSON.stringify(v)); } catch(e){} }
+};
+let phase = store.get("phase", 0);
+let dayIdx = store.get("day", 0);
+if (!(phase >= 0 && phase < 3)) phase = 0;
+if (!(dayIdx >= 0 && dayIdx <= DAYS.length)) dayIdx = 0;
+
+const pick = v => Array.isArray(v) ? v[phase] : v;
+const fmt = s => s >= 60 ? (s % 60 === 0 ? (s/60) + " min" : Math.floor(s/60) + ":" + String(s%60).padStart(2,"0")) : s + " sec";
+
+// ---------- sound ----------
+let audio;
+function beep(times){
+  try {
+    audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+    for (let i = 0; i < (times||1); i++){
+      const o = audio.createOscillator(), g = audio.createGain();
+      o.frequency.value = 880; o.connect(g); g.connect(audio.destination);
+      const t = audio.currentTime + i*0.25;
+      g.gain.setValueAtTime(0.25, t); g.gain.exponentialRampToValueAtTime(0.001, t+0.18);
+      o.start(t); o.stop(t+0.2);
+    }
+  } catch(e){}
+  try { navigator.vibrate && navigator.vibrate(times > 1 ? [200,100,200] : 150); } catch(e){}
+}
+function unlockAudio(){ try { audio = audio || new (window.AudioContext || window.webkitAudioContext)(); audio.resume && audio.resume(); } catch(e){} }
+
+// ---------- phase + day controls ----------
+const phasesEl = document.getElementById("phases");
+PHASE_INFO.forEach((p,i) => {
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "phase-btn";
+  b.innerHTML = `<b>${p.name}</b><span>${p.weeks}</span>`;
+  b.addEventListener("click", () => { phase = i; store.set("phase", i); render(); });
+  phasesEl.appendChild(b);
+});
+const daysEl = document.getElementById("days");
+DAYS.forEach((d,i) => {
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "day-btn"; b.setAttribute("role","tab");
+  b.innerHTML = `<b>Day ${i+1}</b><span>${d.short}</span>`;
+  b.addEventListener("click", () => { dayIdx = i; store.set("day", i); render(); window.scrollTo({top:0}); });
+  daysEl.appendChild(b);
+});
+{
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "day-btn"; b.setAttribute("role","tab");
+  b.innerHTML = `<b>Fuel</b><span>What to eat</span>`;
+  b.addEventListener("click", () => { dayIdx = DAYS.length; store.set("day", DAYS.length); render(); window.scrollTo({top:0}); });
+  daysEl.appendChild(b);
+}
+
+// ---------- render ----------
+let stopFns = [];
+function render(){
+  stopFns.forEach(f => f()); stopFns = [];
+  [...phasesEl.children].forEach((b,i) => b.setAttribute("aria-pressed", i === phase));
+  [...daysEl.children].forEach((b,i) => b.setAttribute("aria-selected", i === dayIdx));
+  document.getElementById("phaseNote").textContent = PHASE_INFO[phase].note;
+  const isFuel = dayIdx === DAYS.length;
+  document.querySelector(".bar").style.display = isFuel ? "none" : "";
+  if (isFuel) { renderFuel(); return; }
+
+  const day = DAYS[dayIdx];
+  const done = store.get("done:"+day.key, {});
+  const root = document.getElementById("day");
+  root.innerHTML = `<div class="day-head"><h2>Day ${dayIdx+1}: ${day.title}</h2><p>${day.intro}</p></div>`;
+
+  day.blocks.forEach(block => {
+    const s = document.createElement("section");
+    s.innerHTML = `<div class="block${block.soft ? " soft" : ""}"><h3>${block.title}</h3><span>${block.time}</span></div>` +
+      (block.note ? `<p class="block-note">${block.note}</p>` : "");
+
+    if (block.circuit) s.appendChild(buildCircuit(block));
+    if (block.intervals) s.appendChild(buildIntervals(block));
+
+    block.items.forEach(it => {
+      const iv = block.intervals;
+      const dose = block.circuit ? `${block.circuit.work} sec, ${pick(block.circuit.rounds)} rounds`
+        : iv ? `${pick(iv.rounds)} rounds: ${pick(iv.work)} sec ${iv.hard.toLowerCase()}, ${pick(iv.rest)} sec easy` : pick(it.dose);
+      const rows = [["Setup",it.setup],["Move",it.move]];
+      if (it.feel) rows.push(["Feel",it.feel]);
+      if (it.avoid) rows.push(["Avoid",it.avoid]);
+      const rest = it.rest ? pick(it.rest) : null;
+      const hold = it.hold ? pick(it.hold) : null;
+      const timerSec = rest || hold;
+      const timerLabel = rest ? `Start ${fmt(rest)} rest` : hold ? `Start ${fmt(hold)} timer` : "";
+
+      const card = document.createElement("div");
+      card.className = "ex";
+      card.innerHTML = `
+        <div class="row">
+          <input type="checkbox" class="check" aria-label="Done: ${it.name}">
+          <details>
+            <summary><span class="name">${it.name}</span><span class="meta"><span class="dose">${dose}</span><span class="chev"></span></span></summary>
+            <div class="how">
+              <dl>${rows.map(([k,v]) => `<dt class="${k==='Avoid'?'avoid':''}">${k}</dt><dd>${v}</dd>`).join("")}</dl>
+              ${it.log ? `<div class="log"><label for="log-${it.id}">Weight</label><input id="log-${it.id}" inputmode="decimal" placeholder="lbs used"></div>` : ""}
+              <div class="actions">
+                <a class="btn primary" href="${q(it.demo)}" target="_blank" rel="noopener">Watch a demo</a>
+                ${timerSec ? `<button class="btn timer" type="button" data-sec="${timerSec}">${timerLabel}</button>` : ""}
+              </div>
+            </div>
+          </details>
+        </div>`;
+      const cb = card.querySelector(".check");
+      cb.checked = !!done[it.id];
+      card.classList.toggle("is-done", cb.checked);
+      cb.addEventListener("change", () => {
+        const d = store.get("done:"+day.key, {});
+        d[it.id] = cb.checked; store.set("done:"+day.key, d);
+        card.classList.toggle("is-done", cb.checked);
+        if (cb.checked) card.querySelector("details").open = false;
+        updateProgress();
+      });
+      const input = card.querySelector(".log input");
+      if (input){
+        input.value = store.get("log:"+it.id, "");
+        input.addEventListener("input", () => store.set("log:"+it.id, input.value));
+      }
+      const tb = card.querySelector(".timer");
+      if (tb) tb.addEventListener("click", () => { unlockAudio(); runTimer(tb); });
+      s.appendChild(card);
+    });
+    root.appendChild(s);
+  });
+  updateProgress();
+}
+
+function updateProgress(){
+  const day = DAYS[dayIdx];
+  const all = day.blocks.flatMap(b => b.items);
+  const done = store.get("done:"+day.key, {});
+  const n = all.filter(i => done[i.id]).length;
+  document.getElementById("count").textContent = n + " of " + all.length;
+  document.getElementById("fill").style.width = (n / all.length * 100) + "%";
+}
+
+document.getElementById("reset").addEventListener("click", () => {
+  store.set("done:"+DAYS[dayIdx].key, {}); render();
+});
+
+// ---------- single timers ----------
+function runTimer(btn){
+  if (btn._iv) { clearInterval(btn._iv); btn._iv = null; btn.classList.remove("running"); btn.textContent = btn._label; return; }
+  btn._label = btn._label || btn.textContent;
+  let left = +btn.dataset.sec;
+  btn.classList.add("running");
+  const show = () => { btn.textContent = fmtClock(left) + "  (tap to stop)"; };
+  show();
+  btn._iv = setInterval(() => {
+    left--;
+    if (left <= 0) {
+      clearInterval(btn._iv); btn._iv = null;
+      btn.classList.remove("running"); btn.textContent = "Done. " + btn._label;
+      beep(2); return;
+    }
+    if (left <= 3) beep(1);
+    show();
   }, 1000);
 }
+const fmtClock = s => Math.floor(s/60) + ":" + String(s%60).padStart(2,"0");
 
-function updateRestDisplay() {
-  document.getElementById('rest-countdown').textContent = restRemaining;
-  var pct = (restRemaining / restTotal) * 100;
-  document.getElementById('rest-fill').style.width = pct + '%';
-  document.getElementById('rest-fill').style.background = restRemaining <= 10 ? '#E24B4A' : '#EF9F27';
-}
-
-function finishRest() {
-  if (restInterval) clearInterval(restInterval);
-  restInterval = null;
-  document.getElementById('rest-bar').classList.remove('visible');
-  try {
-    var ctx = new (window.AudioContext || window.webkitAudioContext)();
-    [0, 0.15, 0.3].forEach(function(t) {
-      var o = ctx.createOscillator();
-      var g = ctx.createGain();
-      o.connect(g); g.connect(ctx.destination);
-      o.frequency.value = 880;
-      g.gain.setValueAtTime(0.3, ctx.currentTime + t);
-      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + t + 0.12);
-      o.start(ctx.currentTime + t);
-      o.stop(ctx.currentTime + t + 0.15);
-    });
-  } catch(e) {}
-}
-
-function skipRest() {
-  if (restInterval) clearInterval(restInterval);
-  restInterval = null;
-  document.getElementById('rest-bar').classList.remove('visible');
-}
-
-var howTo = {
-  "Barbell back squat": {
-    steps: ["Bar across upper traps, not your neck. Grip slightly wider than shoulder-width.", "Feet shoulder-width, toes out 15-30 degrees.", "Big breath, brace your core hard, sit back and down. Chest stays up.", "Knees track over toes. Hit parallel or just below.", "Drive through your whole foot to stand. Exhale at top."],
-    note: "Start light. Form first, weight later. The squat rewards patience and punishes ego."
-  },
-  "Leg press": {
-    steps: ["Feet shoulder-width on the platform, toes slightly out.", "Lower until knees hit about 90 degrees. Don't let lower back peel off the seat.", "Press through your heels. Don't lock out knees at top.", "2 seconds down, 1 up."],
-    note: "Higher foot position hits glutes more. Lower hits quads more."
-  },
-  "Flat barbell bench press": {
-    steps: ["Lie flat, eyes under the bar. Grip slightly wider than shoulder-width. Feet flat on floor.", "Lower to your chest, controlled, 2-3 seconds down.", "Press back up. Don't bounce off your chest.", "Shoulder blades stay pinched back the whole time."],
-    note: "Retracted shoulder blades throughout. Protects your shoulders long-term."
-  },
-  "Incline dumbbell press": {
-    steps: ["Bench at 30-45 degrees. Dumbbells at shoulder level, palms forward.", "Press up and slightly in. Dumbbells nearly touch at top.", "Lower slowly to chest. Elbows at 45-75 degrees from body.", "Full range - let the stretch happen at the bottom."],
-    note: "Upper chest and anterior shoulder. Pairs well with flat bench."
-  },
-  "Dumbbell lateral raise": {
-    steps: ["Dumbbells at sides, slight elbow bend.", "Raise arms out to sides until parallel to floor.", "Lead with elbows, not wrists. Think: pouring water.", "3 seconds down. Don't drop them."],
-    note: "Go light. Most people ego-lift this and get nothing from it."
-  },
-  "Cable tricep pushdown": {
-    steps: ["Cable machine, rope or bar at the top.", "Elbows pinned to your sides. They don't move.", "Push down until arms fully extend.", "Control back up. Only forearms move."],
-    note: "Elbows glued to ribs is the whole cue."
-  },
-  "Hanging knee raise": {
-    steps: ["Hang from pull-up bar, overhand grip.", "Brace core and pull knees toward your chest.", "Hold briefly at top, lower with control.", "No swinging. Use the captain's chair if you can't control it."],
-    note: "Progress to straight-leg raises when this gets easy."
-  },
-  "Plank": {
-    steps: ["Forearms on floor, elbows under shoulders.", "Straight line head to heels. Hips don't sag or pike.", "Squeeze glutes, quads, core. Breathe normally.", "Build from 30 sec toward 60."],
-    note: "Actively squeeze every muscle. 30 braced seconds beats 90 slack ones."
-  },
-  "Romanian deadlift": {
-    steps: ["Bar in hands just outside hips, feet hip-width.", "Push hips BACK, not down. Bar stays close to your legs.", "Lower until strong hamstring stretch. Back flat the whole time.", "Drive hips forward to stand. Squeeze glutes at top."],
-    note: "Hinge at the hips, don't squat. Push your hips back like closing a car door with your backside."
-  },
-  "Pull-up / Lat pulldown": {
-    steps: ["Pulldown: thighs under pad, grip wider than shoulder-width.", "Pull bar to upper chest, leading with elbows - elbows into back pockets.", "Control back up to full extension.", "Pull-up: same cue - chest to bar."],
-    note: "Pulldowns build toward pull-ups. Use them interchangeably."
-  },
-  "Barbell bent-over row": {
-    steps: ["Hinge at hips, torso roughly parallel to floor. Soft knees.", "Grip just wider than shoulder-width. Back flat, core braced.", "Pull to lower chest or upper stomach. Lead with elbows.", "Lower with control. Don't round as you fatigue."],
-    note: "One of the best back exercises in the gym. The hip hinge reinforces your deadlift pattern."
-  },
-  "Leg curl (machine)": {
-    steps: ["Face down, pad just above heels.", "Curl heels toward backside as far as machine allows.", "Hold 1 second at top. 3 seconds down.", "Don't let hips lift off the pad."],
-    note: "Isolates hamstrings. Complements RDLs which hit the stretched position."
-  },
-  "Barbell hip thrust": {
-    steps: ["Upper back against bench. Bar over hips - use a pad.", "Feet flat, hip-width, knees bent.", "Drive through heels, thrust hips up. Squeeze glutes hard at top.", "Straight line from knees to shoulders. Don't hyperextend lower back.", "Lower slowly and repeat."],
-    note: "Best glute exercise in the gym. Load it progressively - responds very well to weight."
-  },
-  "Cable face pull": {
-    steps: ["Cable at head height or above. Rope attachment.", "Step back for tension. Stand tall.", "Pull rope toward your face, hands separating - elbows high and wide.", "Hold briefly at ears, extend slowly back out."],
-    note: "Don't skip this. Counteracts all your pressing and keeps shoulders healthy long-term."
-  },
-  "Cable woodchop": {
-    steps: ["Cable at the top. Stand sideways to the machine.", "Both hands on handle, arms extended.", "Pull down and across your body diagonally.", "Rotate through your torso. Control back up."],
-    note: "Rotational core strength - the kind you actually use."
-  },
-  "Trap bar deadlift": {
-    steps: ["Step inside the trap bar, feet hip-width. Grab the handles.", "Hips above knees, chest up, back flat. More upright than conventional.", "Big breath, brace hard. Push the floor away - think leg press not pull.", "Hips and shoulders rise together. Stand tall.", "Lower with control by hinging back at hips."],
-    note: "More quad-friendly than conventional, easier on the lower back. Great full body anchor."
-  },
-  "Bulgarian split squat": {
-    steps: ["Stand 2 feet in front of a bench. Rear foot on bench, laces down.", "Front foot far enough forward that shin stays vertical when you lower.", "Lower back knee toward floor. Chest tall.", "Drive through front heel to stand. All reps one side, then switch."],
-    note: "Harder than it looks. Go light first - it exposes side-to-side imbalances immediately."
-  },
-  "Overhead barbell press": {
-    steps: ["Bar at shoulder height on rack. Grip just outside shoulder-width.", "Brace your core hard. Don't arch lower back.", "Press straight up. Bar moves slightly back once clear of head, finishes over ears.", "Lower with control back to shoulders."],
-    note: "Vertical push - completely different demand from bench. Core stability is the limiting factor early on."
-  },
-  "Chest-supported dumbbell row": {
-    steps: ["Incline bench at 45 degrees. Lie chest-down, dumbbells hanging.", "Pull dumbbells toward your hips, leading with elbows.", "Squeeze shoulder blades together at top.", "Lower slowly - full stretch at the bottom."],
-    note: "Chest support removes lower back fatigue and eliminates momentum. Pure back work."
-  },
-  "Dumbbell shoulder press": {
-    steps: ["Seated, back supported. Dumbbells at shoulder height, palms forward.", "Press straight up until arms nearly extended.", "Lower slowly back to shoulder height.", "Brace core - don't let lower back arch."],
-    note: "If you are using momentum to get the weight up, go lighter."
-  },
-  "Dumbbell row": {
-    steps: ["One knee and hand on bench. Other foot flat on floor.", "Dumbbell hanging straight down.", "Pull toward hip - elbow close to body.", "Lower with control. All reps then switch."],
-    note: "One of the best unilateral back exercises."
-  },
-  "Ab wheel rollout": {
-    steps: ["Kneel with ab wheel in front of you.", "Roll forward slowly - back stays flat, don't let it arch.", "Go as far as you can without sagging, pull back with your core.", "Start short. Full extension comes with time."],
-    note: "If you feel it in your lower back instead of your core, shorten your range."
-  },
-  "Goblet squat": {
-    steps: ["Dumbbell or kettlebell at your chest, both hands cupping it.", "Feet shoulder-width, toes slightly out.", "Squat down, elbows inside knees, weight close to chest.", "Drive through heels to stand. Chest stays tall."],
-    note: "Front-loaded weight forces you to stay upright. Great for squat mechanics."
-  },
-  "Dumbbell thruster": {
-    steps: ["Dumbbells at shoulder height, palms facing in.", "Squat to parallel, then as you drive up, press dumbbells overhead in one fluid motion.", "Arms fully extended at top.", "Lower to shoulders as you descend into next squat. One continuous movement."],
-    note: "Hits basically everything. Go lighter than you think - these catch up fast in a circuit."
-  },
-  "Kettlebell swing": {
-    steps: ["Feet slightly wider than hips. Bell on floor in front.", "Hinge, grab bell, hike it back between legs like a football snap.", "Drive hips forward explosively - bell floats to chest height.", "Let it swing back and repeat. Power from the hip snap, not your arms."],
-    note: "It is a hip hinge, not a squat. Arms are just a rope connecting you to the bell."
-  },
-  "Box jump": {
-    steps: ["Stand in front of box, feet shoulder-width.", "Dip, swing arms, explode up. Land softly with both feet on box.", "Land in partial squat - quiet landing.", "Step down. Reset and repeat."],
-    note: "Start with a low box. Quiet landing equals good mechanics."
-  },
-  "Battle ropes": {
-    steps: ["Feet shoulder-width, knees bent, hips back - athletic stance.", "One end in each hand. Alternate arms up and down for waves.", "Drive from shoulders and arms. Keep waves continuous.", "Variation: double waves, slams, or circles."],
-    note: "30-40 seconds all-out will humble you. Stay low in your stance."
-  },
-  "Medicine ball slam": {
-    steps: ["Feet shoulder-width, ball overhead with both hands.", "Brace core and slam ball into floor as hard as you can.", "Hinge at hips as you slam - whole body into it.", "Catch the bounce or pick up and repeat."],
-    note: "Heavier ball equals more resistance. Lighter equals faster reps."
-  },
-  "Farmer carry": {
-    steps: ["Heavy dumbbells or kettlebells in each hand.", "Stand tall - chest up, shoulders back, core braced.", "Walk for the distance or time. Don't let weight pull shoulders forward.", "Short controlled steps. Breathe normally."],
-    note: "Builds grip, core stability, and conditioning simultaneously."
-  }
-};
-
-var data = {
-  1: {
-    phase: "Phase 1: Foundation",
-    sub: "3 days/week · 50 min · 3x12 · 75s main / 60s accessory / 45s core",
-    restMain: 75, restAcc: 60, restCore: 45, circuitRounds: 4,
-    days: [
-      { note: "Front chain - quads, chest, anterior shoulders. 75s rest on main lifts, 60s accessories, 45s core. Go light - learn the patterns.",
-        warmup: [["5 min cardio","treadmill or bike","Easy - just get warm"],["Goblet squat","2 x 10, light","Warmup pattern only - not a working set"]],
-        main: [["Barbell back squat","3 x 12","Light. Depth and chest position first."],["Flat barbell bench press","3 x 12","Shoulder blades pinched, controlled descent"],["Leg press","3 x 12","Full range, feet shoulder-width"],["Incline dumbbell press","3 x 12","30-45 degree incline"]],
-        accessory: [["Dumbbell lateral raise","3 x 12","Light - 3 sec down"],["Cable tricep pushdown","3 x 12","Elbows glued to sides"]],
-        core: [["Plank","3 x 30 sec","Squeeze everything"],["Hanging knee raise","3 x 10","No swinging"]]
-      },
-      { note: "Rear chain - hamstrings, glutes, back, rear shoulders. 75s rest on main lifts, 60s accessories, 45s core.",
-        warmup: [["5 min cardio","treadmill or bike","Easy"],["Romanian deadlift","2 x 10, empty bar","Groove the hinge before loading"]],
-        main: [["Romanian deadlift","3 x 12","Hip hinge - push hips back, back flat"],["Pull-up / Lat pulldown","3 x 12","Lead with elbows, chest to bar"],["Barbell bent-over row","3 x 12","Torso parallel, pull to lower chest"],["Leg curl (machine)","3 x 12","3 seconds down"]],
-        accessory: [["Barbell hip thrust","3 x 12","Squeeze hard at the top"],["Cable face pull","3 x 12","Elbows high and wide - don't skip"]],
-        core: [["Plank","3 x 30 sec",""],["Cable woodchop","3 x 10 each side","Rotate through your torso"]]
-      },
-      { note: "Full body - different patterns from Days 1 and 2. No repeated movements. 75s rest main, 60s accessories, 45s core.",
-        warmup: [["5 min cardio","any machine","Easy"]],
-        main: [["Trap bar deadlift","3 x 12","Push the floor away - more upright than conventional"],["Bulgarian split squat","3 x 12 each side","Rear foot on bench - go light first"],["Overhead barbell press","3 x 12","Brace core hard - don't arch"],["Chest-supported dumbbell row","3 x 12","Chest-down on incline bench, strict pull"]],
-        accessory: [["Dumbbell shoulder press","3 x 12","Seated, controlled"],["Dumbbell row","3 x 12 each side","One knee on bench"]],
-        core: [["Ab wheel rollout","3 x 8","Short range - back stays flat"],["Plank","2 x 40 sec",""]]
-      },
-      { note: "Bonus fat burner. 40 sec work / 20 sec rest. 4 rounds. 90 sec rest between rounds. Tap check when each exercise done.",
-        warmup: [["5 min cardio","bike or rower","Build to moderate pace"]],
-        main: [["Goblet squat","40 sec on / 20 sec rest","Moderate weight, continuous reps"],["Dumbbell thruster","40 sec on / 20 sec rest","Squat into press - one fluid movement"],["Kettlebell swing","40 sec on / 20 sec rest","Hip snap - not a squat"],["Chest-supported dumbbell row","40 sec on / 20 sec rest","Strict even when tired"],["Battle ropes","40 sec on / 20 sec rest","All out"],["Box jump","40 sec on / 20 sec rest","Soft landing - step down between reps"],["Medicine ball slam","40 sec on / 20 sec rest","Whole body into every slam"],["Farmer carry","40 sec walk","Heavy - chest up, core braced"]],
-        accessory: [],
-        core: [["Plank","2 x 45 sec","Finish strong"]]
-      }
-    ]
-  },
-  3: {
-    phase: "Phase 2: Building",
-    sub: "3 days/week · 50 min · 3x12 heavier · 75s main / 60s accessory / 45s core",
-    restMain: 75, restAcc: 60, restCore: 45, circuitRounds: 5,
-    days: [
-      { note: "Same movements as Phase 1, heavier weight throughout. If 3x12 felt easy last phase, add 10 lbs. 75s rest main, 60s accessories.",
-        warmup: [["5 min cardio","",""],["Goblet squat","2 x 10, moderate",""]],
-        main: [["Barbell back squat","3 x 12","Add 10-20 lbs from Phase 1. Last 2 reps should be hard."],["Flat barbell bench press","3 x 12","Add 10 lbs"],["Leg press","3 x 12","Add weight"],["Incline dumbbell press","3 x 12","Add 5 lbs per dumbbell"]],
-        accessory: [["Dumbbell lateral raise","3 x 12","Add a small amount of weight"],["Cable tricep pushdown","3 x 12","Add weight"]],
-        core: [["Plank","3 x 40 sec",""],["Hanging knee raise","3 x 12",""],["Ab wheel rollout","2 x 10",""]]
-      },
-      { note: "Heavier across the board. Hip thrust responds especially well to load. 75s rest main, 60s accessories.",
-        warmup: [["5 min cardio","",""],["Romanian deadlift","2 x 10, light",""]],
-        main: [["Romanian deadlift","3 x 12","Add 10-20 lbs"],["Pull-up / Lat pulldown","3 x 12","Add weight or reduce band assistance"],["Barbell bent-over row","3 x 12","Add weight"],["Leg curl (machine)","3 x 12","Add weight"]],
-        accessory: [["Barbell hip thrust","3 x 12","Add weight - this one responds fast"],["Cable face pull","3 x 12",""]],
-        core: [["Plank","3 x 40 sec",""],["Cable woodchop","3 x 12 each side",""]]
-      },
-      { note: "Trap bar is your anchor today. Heavier across the board. 75s rest main, 60s accessories.",
-        warmup: [["5 min cardio","",""]],
-        main: [["Trap bar deadlift","3 x 12","Add weight - this one moves fast early on"],["Bulgarian split squat","3 x 12 each side","Add light dumbbells if bodyweight is easy"],["Overhead barbell press","3 x 12","Add weight"],["Chest-supported dumbbell row","3 x 12","Add weight"]],
-        accessory: [["Dumbbell shoulder press","3 x 12","Add weight"],["Dumbbell row","3 x 12 each side",""]],
-        core: [["Ab wheel rollout","3 x 10",""],["Plank","2 x 45 sec",""],["Cable woodchop","2 x 12 each side",""]]
-      },
-      { note: "5 rounds now. Same structure, heavier weights. 40 sec on / 20 sec rest. 90 sec between rounds.",
-        warmup: [["5 min cardio","build the pace",""]],
-        main: [["Goblet squat","40 sec on / 20 sec rest","Heavier than Phase 1"],["Dumbbell thruster","40 sec on / 20 sec rest",""],["Kettlebell swing","40 sec on / 20 sec rest","Heavier bell"],["Chest-supported dumbbell row","40 sec on / 20 sec rest",""],["Battle ropes","40 sec on / 20 sec rest",""],["Box jump","40 sec on / 20 sec rest","Higher box if ready"],["Medicine ball slam","40 sec on / 20 sec rest","Heavier ball"],["Farmer carry","40 sec walk","Heavier dumbbells"]],
-        accessory: [],
-        core: [["Plank","2 x 45 sec",""]]
-      }
-    ]
-  },
-  5: {
-    phase: "Phase 3: Loading",
-    sub: "3 days/week · 50 min · 4x10 · 60s main / 45s accessory / 30s core",
-    restMain: 60, restAcc: 45, restCore: 30, circuitRounds: 5,
-    days: [
-      { note: "Up to 4 sets, down to 10 reps. More total volume. Rest drops to 60s on main lifts - this is where fat loss accelerates. Add weight from Phase 2.",
-        warmup: [["5 min cardio","",""],["Goblet squat","2 x 8",""]],
-        main: [["Barbell back squat","4 x 10","Heavier than Phase 2. 60s rest - stick to it."],["Flat barbell bench press","4 x 10","Add weight from Phase 2"],["Leg press","4 x 10","Add weight"],["Incline dumbbell press","4 x 10",""]],
-        accessory: [["Dumbbell lateral raise","3 x 12","45s rest"],["Cable tricep pushdown","3 x 12","45s rest"]],
-        core: [["Plank","3 x 45 sec","30s rest between"],["Hanging knee raise","3 x 12",""],["Ab wheel rollout","3 x 10",""]]
-      },
-      { note: "4 sets, 10 reps, 60s rest. Tighter rest means more calories burned. Keep weights progressing. Back flat on RDL always.",
-        warmup: [["5 min cardio","",""],["Romanian deadlift","2 x 10, moderate",""]],
-        main: [["Romanian deadlift","4 x 10","Back flat - non-negotiable at any weight"],["Pull-up / Lat pulldown","4 x 10","Add weight"],["Barbell bent-over row","4 x 10","Add weight"],["Leg curl (machine)","4 x 10",""]],
-        accessory: [["Barbell hip thrust","3 x 12","Keep loading this one"],["Cable face pull","3 x 15","45s rest - high reps, shoulder health"]],
-        core: [["Cable woodchop","3 x 12 each side","30s rest"],["Plank","3 x 50 sec",""]]
-      },
-      { note: "4 sets, 10 reps, 60s rest. Trap bar and OHP are your anchors. Push the weight.",
-        warmup: [["5 min cardio","",""]],
-        main: [["Trap bar deadlift","4 x 10","Heavier than Phase 2"],["Bulgarian split squat","4 x 10 each side","Dumbbells in hand now"],["Overhead barbell press","4 x 10","Add weight"],["Chest-supported dumbbell row","4 x 10","Add weight"]],
-        accessory: [["Dumbbell shoulder press","3 x 12","45s rest"],["Dumbbell row","3 x 12 each side",""]],
-        core: [["Ab wheel rollout","3 x 12","30s rest"],["Cable woodchop","3 x 12 each side",""],["Plank","2 x 50 sec",""]]
-      },
-      { note: "5 rounds. 40 sec on / 20 sec rest. 90 sec between rounds. Heavier weights throughout.",
-        warmup: [["5 min cardio","build to a strong pace",""]],
-        main: [["Goblet squat","40 sec on / 20 sec rest","Heavy"],["Dumbbell thruster","40 sec on / 20 sec rest",""],["Kettlebell swing","40 sec on / 20 sec rest",""],["Chest-supported dumbbell row","40 sec on / 20 sec rest",""],["Battle ropes","40 sec on / 20 sec rest",""],["Box jump","40 sec on / 20 sec rest",""],["Medicine ball slam","40 sec on / 20 sec rest",""],["Farmer carry","40 sec walk","Max weight with good posture"]],
-        accessory: [],
-        core: [["Ab wheel rollout","2 x 12",""],["Plank","1 x 60 sec",""]]
-      }
-    ]
-  },
-  7: {
-    phase: "Phase 4: Peak",
-    sub: "3 days/week · 50 min · 4x10 heavier · 60s main / 45s accessory / 30s core",
-    restMain: 60, restAcc: 45, restCore: 30, circuitRounds: 6,
-    days: [
-      { note: "Same structure as Phase 3, heavier weight on everything. 60s rest on main - hold that line. This is the hardest phase.",
-        warmup: [["5 min cardio","",""],["Goblet squat","2 x 8, moderate",""]],
-        main: [["Barbell back squat","4 x 10","Heaviest squat of the program. Last 2 reps hard."],["Flat barbell bench press","4 x 10","Heaviest bench of the program"],["Leg press","4 x 10","Add weight from Phase 3"],["Incline dumbbell press","4 x 10","Add weight"]],
-        accessory: [["Dumbbell lateral raise","4 x 12","45s rest"],["Cable tricep pushdown","4 x 12","45s rest"]],
-        core: [["Plank","3 x 60 sec","30s rest - finish strong"],["Hanging knee raise","3 x 15",""],["Ab wheel rollout","3 x 12",""]]
-      },
-      { note: "Heaviest rear chain day of the program. 60s rest - stick to it even when it feels too short.",
-        warmup: [["5 min cardio","",""],["Romanian deadlift","2 x 10, moderate",""]],
-        main: [["Romanian deadlift","4 x 10","Peak load - back flat, no compromises"],["Pull-up / Lat pulldown","4 x 10","Heaviest yet"],["Barbell bent-over row","4 x 10","Heaviest yet"],["Leg curl (machine)","4 x 10","Add weight"]],
-        accessory: [["Barbell hip thrust","4 x 12","Heaviest hip thrust of the program"],["Cable face pull","3 x 15","Shoulder health - don't skip"]],
-        core: [["Cable woodchop","3 x 15 each side","30s rest"],["Plank","3 x 60 sec",""]]
-      },
-      { note: "Heaviest Day 3 of the program. Compete with your best numbers on trap bar and OHP.",
-        warmup: [["5 min cardio","",""]],
-        main: [["Trap bar deadlift","4 x 10","Heaviest trap bar of the program"],["Bulgarian split squat","4 x 12 each side","Heaviest split squat yet"],["Overhead barbell press","4 x 10","Heaviest OHP of the program"],["Chest-supported dumbbell row","4 x 10","Heaviest yet"]],
-        accessory: [["Dumbbell shoulder press","4 x 12","45s rest"],["Dumbbell row","4 x 12 each side",""]],
-        core: [["Ab wheel rollout","3 x 15","30s rest"],["Cable woodchop","3 x 15 each side",""],["Plank","2 x 60 sec",""]]
-      },
-      { note: "6 rounds - the most of the program. 40 sec on / 20 sec rest. 90 sec between rounds. Heaviest circuit weights yet. Earn it.",
-        warmup: [["5 min cardio","build hard",""]],
-        main: [["Goblet squat","40 sec on / 20 sec rest","Heaviest of the program"],["Dumbbell thruster","40 sec on / 20 sec rest",""],["Kettlebell swing","40 sec on / 20 sec rest",""],["Chest-supported dumbbell row","40 sec on / 20 sec rest",""],["Battle ropes","40 sec on / 20 sec rest","All out"],["Box jump","40 sec on / 20 sec rest",""],["Medicine ball slam","40 sec on / 20 sec rest",""],["Farmer carry","40 sec walk","Heaviest of the program"]],
-        accessory: [],
-        core: [["Ab wheel rollout","2 x 15",""],["Plank","2 x 60 sec",""]]
-      }
-    ]
-  }
-};
-
-var currentWeek = 1;
-var currentDay = 0;
-var checked = {};
-try { checked = JSON.parse(localStorage.getItem('justin_v3') || '{}'); } catch(e) {}
-
-function save() {
-  try { localStorage.setItem('justin_v3', JSON.stringify(checked)); } catch(e) {}
-}
-
-function getKey() { return 'w' + currentWeek + 'd' + currentDay; }
-
-function setWeek(w) {
-  currentWeek = w;
-  document.querySelectorAll('.week-tab').forEach(function(t, i) {
-    t.classList.toggle('active', [1,3,5,7][i] === w);
-  });
-  renderDay();
-}
-
-function setDay(d) {
-  currentDay = d;
-  document.querySelectorAll('.day-tab').forEach(function(t, i) {
-    t.classList.toggle('active', i === d);
-  });
-  renderDay();
-}
-
-function toggle(key, idx, sType) {
-  var wasChecked = checked[key + '_' + idx];
-  checked[key + '_' + idx] = !wasChecked;
-  save();
-  var week = data[currentWeek];
-  if (!wasChecked && sType !== 'warmup') {
-    var secs;
-    if (sType === 'circuit') { secs = 90; }
-    else if (sType === 'main') { secs = week.restMain; }
-    else if (sType === 'accessory') { secs = week.restAcc; }
-    else if (sType === 'core') { secs = week.restCore; }
-    else { secs = 60; }
-    startRest(secs);
-  } else {
-    skipRest();
-  }
-  renderDay();
-}
-
-function resetDay() {
-  var key = getKey();
-  Object.keys(checked).forEach(function(k) {
-    if (k.indexOf(key) === 0) delete checked[k];
-  });
-  skipRest();
-  save();
-  renderDay();
-}
-
-function openHow(name, detail) {
-  var info = howTo[name];
-  if (!info) return;
-  document.getElementById('modal-name').textContent = name;
-  document.getElementById('modal-detail').textContent = detail;
-  document.getElementById('modal-steps').innerHTML = info.steps.map(function(s, i) {
-    return '<li><span class="num">' + (i+1) + '</span><span>' + s + '</span></li>';
-  }).join('');
-  var noteEl = document.getElementById('modal-note');
-  if (info.note) {
-    noteEl.style.display = 'block';
-    noteEl.innerHTML = '<strong>Note:</strong> ' + info.note;
-  } else {
-    noteEl.style.display = 'none';
-  }
-  document.getElementById('modal-overlay').classList.add('open');
-}
-
-function closeModalOutside(e) {
-  if (e.target === document.getElementById('modal-overlay')) closeModal();
-}
-
-function closeModal() {
-  document.getElementById('modal-overlay').classList.remove('open');
-}
-
-function renderDay() {
-  var week = data[currentWeek];
-  var day = week.days[currentDay];
-  document.getElementById('phase-badge').textContent = week.phase;
-  document.getElementById('header-sub').textContent = week.sub;
-
-  var key = getKey();
-  var all = (day.warmup || []).concat(day.main || []).concat(day.accessory || []).concat(day.core || []);
-  var total = all.length;
-  var done = all.filter(function(_, i) { return checked[key + '_' + i]; }).length;
-  document.getElementById('progress-text').textContent = done + ' of ' + total + ' done';
-  document.getElementById('progress-fill').style.width = (total ? Math.round(done/total*100) : 0) + '%';
-  document.getElementById('confetti').classList.toggle('show', done === total && total > 0);
-
-  var html = '';
-  var idx = 0;
-  var isCircuit = currentDay === 3;
-
-  if (day.note) {
-    html += '<div class="note-box"><strong>Today:</strong> ' + day.note + '</div>';
-  }
-
-  function section(label, exs, sType) {
-    if (!exs || !exs.length) return;
-    var restSec;
-    if (sType === 'warmup') { restSec = 0; }
-    else if (isCircuit) { restSec = 90; }
-    else if (sType === 'main') { restSec = week.restMain; }
-    else if (sType === 'accessory') { restSec = week.restAcc; }
-    else if (sType === 'core') { restSec = week.restCore; }
-    else { restSec = 60; }
-
-    var restLabel = (sType !== 'warmup' && restSec > 0) ? (' · ' + restSec + 's rest') : '';
-    html += '<div class="section-label">' + label + '<span class="section-rest">' + restLabel + '</span></div>';
-
-    exs.forEach(function(ex) {
-      var i = idx++;
-      var isDone = checked[key + '_' + i];
-      var name = ex[0];
-      var detail = ex[1];
-      var tip = ex[2];
-      var hasHow = !!howTo[name];
-      var safeName = name.replace(/'/g, "\\'");
-      var safeDetail = detail.replace(/'/g, "\\'");
-      var actualType = isCircuit && sType !== 'core' ? 'circuit' : sType;
-
-      html += '<div class="ex-card' + (isDone ? ' done' : '') + '">';
-      html += '<div class="check" onclick="toggle(\'' + key + '\',' + i + ',\'' + actualType + '\')"><span class="check-icon">&#10003;</span></div>';
-      html += '<div class="ex-info">';
-      html += '<div class="ex-name">' + name + '</div>';
-      html += '<div class="ex-detail">' + detail + '</div>';
-      if (tip) html += '<div class="ex-tip">' + tip + '</div>';
-      html += '<div class="btn-row">';
-      if (hasHow) html += '<button class="how-btn" onclick="openHow(\'' + safeName + '\',\'' + safeDetail + '\')">&#9654; how to</button>';
-      if (sType !== 'warmup' && restSec > 0) {
-        html += '<button class="rest-btn" onclick="startRest(' + restSec + ')">&#9201; ' + restSec + 's</button>';
-      }
-      html += '</div></div></div>';
+// ---------- circuit timer ----------
+function buildCircuit(block){
+  const c = block.circuit, rounds = pick(c.rounds), moves = block.items;
+  const seq = [];
+  for (let r = 1; r <= rounds; r++){
+    moves.forEach((m,i) => {
+      seq.push({kind:"work", secs:c.work, label:m.name, sub:`Round ${r} of ${rounds}`});
+      const last = i === moves.length - 1;
+      if (!last) seq.push({kind:"rest", secs:c.rest, label:"Next: " + moves[i+1].name, sub:`Round ${r} of ${rounds}`});
+      else if (r < rounds) seq.push({kind:"rest", secs:c.roundRest, label:"Round rest. Next: " + moves[0].name, sub:`Round ${r+1} of ${rounds} coming up`});
     });
   }
-
-  section('warmup', day.warmup, 'warmup');
-  section('main lifts', day.main, 'main');
-  section('accessories', day.accessory, 'accessory');
-  section('core', day.core, 'core');
-
-  document.getElementById('exercise-list').innerHTML = html;
+  return buildTimer(seq, "Circuit timer", `${rounds} rounds of ${moves.length} moves. Tap start and follow the beeps.`, "Start circuit", "Circuit done", "Check off the moves below.");
 }
 
-renderDay();
+function buildIntervals(block){
+  const v = block.intervals, rounds = pick(v.rounds), w = pick(v.work), r = pick(v.rest);
+  const seq = [];
+  for (let i = 1; i <= rounds; i++){
+    seq.push({kind:"work", secs:w, label:v.hard, sub:`Round ${i} of ${rounds}`});
+    if (i < rounds) seq.push({kind:"rest", secs:r, label:v.easy, sub:`Round ${i+1} of ${rounds} next`});
+  }
+  return buildTimer(seq, "Interval timer", `${rounds} rounds. One tap and it calls every switch.`, "Start intervals", "Done. That counts.", "Check it off below.");
+}
 
+function buildTimer(seq, title, intro, startLabel, doneTitle, doneSub){
+  const total = seq.reduce((a,s) => a + s.secs, 0);
+  const box = document.createElement("div");
+  box.className = "circuit";
+  box.innerHTML = `
+    <div class="now">${title}</div>
+    <div class="clock">${fmtClock(total)}</div>
+    <div class="sub">${intro}</div>
+    <div class="actions"><button class="btn primary" type="button" data-act="go">${startLabel}</button><button class="btn" type="button" data-act="reset">Reset</button></div>`;
+  const now = box.querySelector(".now"), clock = box.querySelector(".clock"), sub = box.querySelector(".sub");
+  const go = box.querySelector('[data-act="go"]');
+  let idx = 0, left = seq[0].secs, iv = null, started = false;
+
+  const paint = () => {
+    const st = seq[idx];
+    box.classList.toggle("work", st.kind === "work");
+    box.classList.toggle("rest", st.kind === "rest");
+    now.textContent = st.kind === "work" ? st.label : st.label;
+    clock.textContent = fmtClock(left);
+    sub.textContent = (st.kind === "work" ? "Go. " : "Recover. ") + st.sub;
+  };
+  const stop = () => { clearInterval(iv); iv = null; };
+  const tick = () => {
+    left--;
+    if (left <= 3 && left > 0) beep(1);
+    if (left <= 0){
+      idx++;
+      if (idx >= seq.length){
+        stop(); beep(3);
+        box.classList.remove("work","rest");
+        now.textContent = doneTitle; clock.textContent = "0:00"; sub.textContent = doneSub;
+        go.textContent = startLabel; started = false; idx = 0; left = seq[0].secs;
+        return;
+      }
+      left = seq[idx].secs; beep(2);
+    }
+    paint();
+  };
+  go.addEventListener("click", () => {
+    unlockAudio();
+    if (iv){ stop(); go.textContent = "Resume"; return; }
+    if (!started){ started = true; beep(2); }
+    paint(); iv = setInterval(tick, 1000); go.textContent = "Pause";
+  });
+  box.querySelector('[data-act="reset"]').addEventListener("click", () => {
+    stop(); idx = 0; left = seq[0].secs; started = false;
+    box.classList.remove("work","rest");
+    now.textContent = title; clock.textContent = fmtClock(total);
+    sub.textContent = intro;
+    go.textContent = startLabel;
+  });
+  stopFns.push(stop);
+  return box;
+}
+
+render();
 </script>
 </body>
 </html>
