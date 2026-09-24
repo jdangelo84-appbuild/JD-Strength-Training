@@ -300,10 +300,10 @@ const DAYS = [
      setup:"Cable high with a rope, elbows pinned at your sides.", move:"Push down, spread the rope at the bottom, return with control.",
      feel:"Triceps.", avoid:"Elbows flaring or leaning into it."}
   ]},
-  {title:"Farmer carry", time:"about 4 min", items:[
-    {id:"farmer", name:"Farmer carry", dose:["3 walks, 40 yd","3 walks, 40 yd","4 walks, 40 yd"], rest:[60,45,45], log:true, demo:"farmer carry proper form",
-     setup:"Heavy dumbbell or kettlebell in each hand, shoulders pulled back and down.", move:"Walk tall with short, quick steps.",
-     feel:"Grip, traps, whole trunk.", avoid:"Shoulders rounding forward or the weights swinging."}
+  {title:"Rear delt fly", time:"about 4 min", items:[
+    {...ACC, id:"reardelt", name:"Cable rear delt fly", demo:"cable rear delt fly standing",
+     setup:"Cables crossed at chest height, light weight, soft bend in the elbows.", move:"Pull both handles out and back in an arc, squeezing shoulder blades together. Return slowly.",
+     feel:"Rear shoulders and upper back.", avoid:"Using your arms to muscle it. Keep the motion coming from your shoulder blades."}
   ]},
   {title:"Finisher", time:"4 to 6 min", note:"Floor rule: tired days still get 2 rounds. Never zero.",
    intervals:{work:[30,30,30], rest:[30,30,30], rounds:[4,5,6], hard:"Hard", easy:"Easy paddle"}, items:[
@@ -376,7 +376,6 @@ const SNACKS = [
   {name:"Greek yogurt, plain, 1 cup", g:23, tip:"Add berries or honey. Good before training or before bed"},
   {name:"Hummus plate with 2 hard boiled eggs", g:16, tip:"Hummus alone is only about 2 g protein per 2 tbsp, so always pair it"},
   {name:"Protein shake, 1 scoop", g:25, tip:"Easiest post workout option"},
-  {name:"Tuna pouch", g:17, tip:"Keep a few in your bag"},
   {name:"Deli turkey roll ups, 4 oz", g:20, tip:"Spread a little hummus inside and roll around a cucumber spear"},
   {name:"Edamame, 1 cup shelled", g:18, tip:"Frozen, microwave 3 min"},
   {name:"Protein bar", g:20, tip:"Check the label for 20 g protein, under 250 calories"},
@@ -388,7 +387,7 @@ const MEALS = [
   {when:"Breakfast", g:38, what:"2 eggs plus 1 cup egg whites scrambled, 1 slice whole grain toast, fruit"},
   {when:"Lunch", g:50, what:"6 oz chicken breast, 1 cup rice, big pile of vegetables"},
   {when:"1 to 2 hours before training", g:28, what:"Turkey sandwich on whole grain bread with hummus instead of mayo, plus a banana"},
-  {when:"After training", g:25, what:"Protein shake plus a piece of fruit"},
+  {when:"After training", g:25, what:"Your usual: 1 scoop protein blended with 1 cup wild berries"},
   {when:"Dinner", g:38, what:"6 oz salmon or lean steak, a potato or sweet potato, vegetables"},
   {when:"Evening", g:23, what:"1 cup Greek yogurt with berries"}
 ];
@@ -434,7 +433,7 @@ function renderFuel(){
   <section>
     <div class="block soft"><h3>Grocery staples</h3></div>
     <div class="fuel-card"><ul>
-      <li><b>Protein:</b> chicken breast, 93% lean ground turkey, salmon, eggs and egg whites, Greek yogurt, deli turkey, tuna pouches, protein powder, hummus (for pairing, not protein)</li>
+      <li><b>Protein:</b> chicken breast, 93% lean ground turkey, salmon, eggs and egg whites, Greek yogurt, deli turkey, protein powder, hummus (for pairing, not protein)</li>
       <li><b>Carbs:</b> oats, rice, potatoes and sweet potatoes, whole grain bread, bananas, berries</li>
       <li><b>Vegetables:</b> bagged salad, frozen broccoli and green beans, peppers, spinach</li>
       <li><b>Fats, in small amounts:</b> avocado, olive oil, nuts (a small handful is already about 170 calories)</li>
@@ -463,7 +462,7 @@ function renderFuel(){
     c.addEventListener("click", () => { total = Math.max(0, total + g); store.set(key, total); paint(); });
     chips.appendChild(c);
   };
-  [["Meal +40 g",40],["Shake +25 g",25],["Yogurt +23 g",23],["Turkey +20 g",20],["Eggs +12 g",12],["Jerky +12 g",12],["+10 g",10]].forEach(([l,g]) => add(l,g));
+  [["Meal +40 g",40],["Shake + berries +25 g",25],["Yogurt +23 g",23],["Turkey +20 g",20],["Eggs +12 g",12],["Jerky +12 g",12],["+10 g",10]].forEach(([l,g]) => add(l,g));
   add("Undo 10 g", -10, "minus");
   paint();
 }
@@ -473,7 +472,7 @@ const store = {
   get(k, d){ try { const v = localStorage.getItem("tp:"+k); return v === null ? d : JSON.parse(v); } catch(e){ return d; } },
   set(k, v){ try { localStorage.setItem("tp:"+k, JSON.stringify(v)); } catch(e){} }
 };
-let phase = store.get("phase", 0);
+let phase = store.get("phase", 1);
 let dayIdx = store.get("day", 0);
 if (!(phase >= 0 && phase < 3)) phase = 0;
 if (!(dayIdx >= 0 && dayIdx <= DAYS.length)) dayIdx = 0;
